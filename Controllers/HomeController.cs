@@ -41,6 +41,7 @@ namespace PAXScheduler.Controllers
             var calendar = new Calendar();
             calendar.Events.AddRange(context.GuidebookEvent.Select(e => new CalendarEvent
             {
+                Uid = e.Id.ToString() + "_" + e.GuideId.ToString() + "@paxschedule.com",
                 Summary = e.Name,
                 Start = new CalDateTime(Convert.ToDateTime(e.StartTime), e.Guide.Timezone),
                 End = new CalDateTime(Convert.ToDateTime(e.EndTime), e.Guide.Timezone),
