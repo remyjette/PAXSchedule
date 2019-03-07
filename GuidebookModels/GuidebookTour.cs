@@ -1,0 +1,30 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace PAXScheduler.GuidebookModels
+{
+    public partial class GuidebookTour
+    {
+        public GuidebookTour()
+        {
+            GuidebookTourMediatrack = new HashSet<GuidebookTourMediatrack>();
+            GuidebookTourstop = new HashSet<GuidebookTourstop>();
+        }
+
+        public long Id { get; set; }
+        public long? GuideId { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public string Cover { get; set; }
+        public string ConcludingMessage { get; set; }
+        public string Headline { get; set; }
+        public string HeadlineDescription { get; set; }
+        public long? ConclusionActionMenuitemId1 { get; set; }
+        public long? ConclusionActionMenuitemId2 { get; set; }
+        public string GpsDisabled { get; set; }
+
+        public virtual GuidebookGuide Guide { get; set; }
+        public virtual ICollection<GuidebookTourMediatrack> GuidebookTourMediatrack { get; set; }
+        public virtual ICollection<GuidebookTourstop> GuidebookTourstop { get; set; }
+    }
+}
