@@ -52,34 +52,36 @@ namespace PAXScheduler.Services
 
         private async Task<string> DownloadGuidebookDb(Event @event)
         {
-            var client = _clientFactory.CreateClient();
-            var searchResponse = await client.GetStringAsync("https://gears.guidebook.com/service/v2/search/?q=" + WebUtility.UrlEncode(@event.Name));
+            using var client = _clientFactory.CreateClient();
 
+            var searchResponse = await client.GetStringAsync("https://gears.guidebook.com/service/v2/search/?q=" + WebUtility.UrlEncode(@event.Name));
             var j = JObject.Parse(searchResponse);
 
             var eventIdentifier = j["data"].FirstOrDefault(x => x.Value<string>("name") == @event.Name)?.Value<string>("productIdentifier");
 
-            var guidebookDatabaseStream = await client.GetStreamAsync($"https://gears.guidebook.com/service/v2/guides/{eventIdentifier}/bundle/");
+            using var guidebookDatabaseStream = await client.GetStreamAsync($"https://gears.guidebook.com/service/v2/guides/{eventIdentifier}/bundle/");
+            using var guidebookArchive = new ZipArchive(guidebookDatabaseStream);
+            var database = guidebookArchive.GetEntry("guide.db");
 
             var databasePath = Path.GetTempFileName();
-
-            using (var guidebookArchive = new ZipArchive(guidebookDatabaseStream))
-            {
-                var database = guidebookArchive.GetEntry("guide.db");
-                database.ExtractToFile(databasePath, true);
-            }
+            database.ExtractToFile(databasePath, true);
 
             return databasePath;
         }
 
         public async Task<GuidebookContext> GetDbContext(string eventName)
         {
-            // Configure() will check _configured inside the lock. Once we're configured though,
-            // we don't need everything grabbing a lock just to read a boolean that won't change.
-            // So check it here as well and don't even call Configure() if it's true.
+            // Configure() will check _configured under the semaphore. Once we're configured
+            // there's no need for the overhead of a semaphore just to check a boolean that
+            // won't change. So check it here as well.
             if (!_configured)
             {
                 await Configure();
+            }
+
+            if (!_events.ContainsKey(eventName))
+            {
+                return null;
             }
 
             return new GuidebookContext(_events[eventName].DbContextOptions);

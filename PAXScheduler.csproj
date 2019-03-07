@@ -7,10 +7,12 @@
 
 
   <ItemGroup>
+    <PackageReference Include="Ical.Net" Version="4.1.10" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.0.0-preview3-19153-02" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.0.0-preview3.19153.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.0.0-preview3.19153.1" />
     <PackageReference Include="System.Collections.Immutable" Version="1.6.0-preview3.19128.7" />
+    <PackageReference Include="System.Reflection.TypeExtensions" Version="4.5.1" />
   </ItemGroup>
 
 </Project>

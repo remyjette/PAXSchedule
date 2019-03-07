@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Ical.Net;
+using Ical.Net.CalendarComponents;
+using Ical.Net.DataTypes;
+using Ical.Net.Serialization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PAXScheduler.Models;
@@ -19,9 +23,32 @@ namespace PAXScheduler.Controllers
             _guidebookService = guidebookService;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             return View();
+        }
+
+        [HttpGet("{eventName}/[action]")]
+        public async Task<IActionResult> Download(string eventName)
+        {
+            using var context = await _guidebookService.GetDbContext(eventName);
+
+            if (context == null)
+            {
+                return NotFound();
+            }
+
+            var calendar = new Calendar();
+            calendar.Events.AddRange(context.GuidebookEvent.Select(e => new CalendarEvent
+            {
+                Summary = e.Name,
+                Start = new CalDateTime(Convert.ToDateTime(e.StartTime), e.Guide.Timezone),
+                End = new CalDateTime(Convert.ToDateTime(e.EndTime), e.Guide.Timezone),
+                Description = e.Description,
+                Location = e.EventLocation.Location.Name
+            }));
+
+            return Ok(calendar);
         }
 
         public IActionResult Privacy()

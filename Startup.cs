@@ -35,7 +35,10 @@ namespace PAXScheduler
 
 
             services
-                .AddMvc()
+                .AddMvc(options =>
+                {
+                    options.OutputFormatters.Add(new CalendarOutputFormatter());
+                })
                 .AddNewtonsoftJson();
 
             services
