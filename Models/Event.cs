@@ -11,12 +11,17 @@ namespace PAXScheduler.Models
 {
     public class Event
     {
+        private static TimeSpan eventExpiration = new TimeSpan(1, 0, 0, 0);
+
         public string Name { get; }
         public string FullName { get; }
-        public bool Configured { get; private set; }
         private readonly GuidebookService _guidebookService;
         private readonly SemaphoreSlim _configureSemaphore = new SemaphoreSlim(1);
         private DbContextOptions<GuidebookContext> _dbContextOptions;
+
+        private bool _configured = false;
+        private DateTime _lastUpdated;
+        public bool Configured { get { return _configured && _lastUpdated < DateTime.Now.Add(eventExpiration); } }
 
         public Event(string name, string fullName, GuidebookService guidebookService)
         {
@@ -39,9 +44,10 @@ namespace PAXScheduler.Models
                 // Configured is checked twice. First outside the semaphore so that once
                 // we've configured, we never need to wait on the semaphore since everything
                 // will be readonly. Second inside the semaphore in case two threads get in
-                // here at the same time.S
+                // here at the same time.
                 _dbContextOptions = await _guidebookService.DownloadGuidebookDb(FullName);
-                Configured = true;
+                _lastUpdated = DateTime.Now;
+                _configured = true;
             }
 
             _configureSemaphore.Release();
