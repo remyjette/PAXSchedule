@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using PAXScheduler.Models.Gudebook;
 using System;
 using System.Collections.Generic;

@@ -1,4 +1,4 @@
-﻿using Ical.Net;
+using Ical.Net;
 using Ical.Net.Serialization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Formatters;
