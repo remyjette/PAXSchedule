@@ -18,73 +18,44 @@ namespace PAXScheduler.Services
     public class GuidebookService
     {
         private readonly IHttpClientFactory _clientFactory;
-        private bool _configured = false;
-        private readonly SemaphoreSlim configureSemaphore = new SemaphoreSlim(1);
 
-        private Dictionary<string, Event> _events = new Dictionary<string, Event>
-        {
-            { "paxeast2019", new Event("PAX East 2019") }
-        };
+        private Dictionary<string, Event> _events;
 
         public GuidebookService(IHttpClientFactory clientFactory)
         {
             _clientFactory = clientFactory;
-        }
 
-        private async Task Configure()
-        {
-            await configureSemaphore.WaitAsync();
-
-            if (!_configured)
+            _events = new Dictionary<string, Event>()
             {
-                foreach (var item in _events)
-                {
-                    var databasePath = await DownloadGuidebookDb(item.Value);
-                    var optionsBuilder = new DbContextOptionsBuilder<GuidebookContext>();
-                    optionsBuilder.UseSqlite("Data Source=" + databasePath);
-                    item.Value.DbContextOptions = optionsBuilder.Options;
-                }
-                _configured = true;
-            }
-
-            configureSemaphore.Release();
+                { "paxeast2019", new Event("paxeast2019", "PAX East 2019", this) }
+            };
         }
 
-        private async Task<string> DownloadGuidebookDb(Event @event)
+        public async Task<DbContextOptions<GuidebookContext>> DownloadGuidebookDb(string eventName)
         {
             using var client = _clientFactory.CreateClient();
 
-            var searchResponse = await client.GetStringAsync("https://gears.guidebook.com/service/v2/search/?q=" + WebUtility.UrlEncode(@event.Name));
+            var searchResponse = await client.GetStringAsync("https://gears.guidebook.com/service/v2/search/?q=" + WebUtility.UrlEncode(eventName));
             var j = JObject.Parse(searchResponse);
 
-            var eventIdentifier = j["data"].FirstOrDefault(x => x.Value<string>("name") == @event.Name)?.Value<string>("productIdentifier");
+            var eventIdentifier = j["data"].FirstOrDefault(x => x.Value<string>("name") == eventName)?.Value<string>("productIdentifier");
 
             using var guidebookDatabaseStream = await client.GetStreamAsync($"https://gears.guidebook.com/service/v2/guides/{eventIdentifier}/bundle/");
             using var guidebookArchive = new ZipArchive(guidebookDatabaseStream);
             var database = guidebookArchive.GetEntry("guide.db");
 
             var databasePath = Path.GetTempFileName();
-            database.ExtractToFile(databasePath, true);
 
-            return databasePath;
+            database.ExtractToFile(databasePath, true);
+            var optionsBuilder = new DbContextOptionsBuilder<GuidebookContext>();
+            optionsBuilder.UseSqlite("Data Source=" + databasePath);
+
+            return optionsBuilder.Options;
         }
 
-        public async Task<GuidebookContext> GetDbContext(string eventName)
+        public Event GetEvent(string eventName)
         {
-            // Configure() will check _configured under the semaphore. Once we're configured
-            // there's no need for the overhead of a semaphore just to check a boolean that
-            // won't change. So check it here as well.
-            if (!_configured)
-            {
-                await Configure();
-            }
-
-            if (!_events.ContainsKey(eventName))
-            {
-                return null;
-            }
-
-            return new GuidebookContext(_events[eventName].DbContextOptions);
+            return _events[eventName];
         }
     }
 }

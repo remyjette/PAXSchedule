@@ -34,7 +34,7 @@ namespace PAXScheduler.Controllers
         [HttpGet("{eventName}/[action]/{eventHashids}")]
         public async Task<IActionResult> Download(string eventName, string eventHashids)
         {
-            using var context = await _guidebookService.GetDbContext(eventName);
+            using var context = await _guidebookService.GetEvent(eventName).GetDbContext();
 
             if (context == null)
             {
