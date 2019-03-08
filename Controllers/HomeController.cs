@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Ical.Net;
 using Ical.Net.CalendarComponents;
@@ -9,6 +10,7 @@ using Ical.Net.DataTypes;
 using Ical.Net.Serialization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using PAXScheduler.GuidebookModels;
 using PAXScheduler.Models;
 using PAXScheduler.Services;
 
@@ -29,7 +31,8 @@ namespace PAXScheduler.Controllers
         }
 
         [HttpGet("{eventName}/[action]")]
-        public async Task<IActionResult> Download(string eventName)
+        [HttpGet("{eventName}/[action]/{eventHashids}")]
+        public async Task<IActionResult> Download(string eventName, string eventHashids)
         {
             using var context = await _guidebookService.GetDbContext(eventName);
 
@@ -38,16 +41,29 @@ namespace PAXScheduler.Controllers
                 return NotFound();
             }
 
-            var calendar = new Calendar();
-            calendar.Events.AddRange(context.GuidebookEvent.Select(e => new CalendarEvent
+            // eventPredicate will determine if a given event should be included in the calendar
+            // If eventHashIds is null, include all events
+            Expression<Func<GuidebookEvent, bool>> eventPredicate = calendarEvent => true;
+
+            if (eventHashids != null)
             {
-                Uid = e.Id.ToString() + "_" + e.GuideId.ToString() + "@paxschedule.com",
-                Summary = e.Name,
-                Start = new CalDateTime(Convert.ToDateTime(e.StartTime), e.Guide.Timezone),
-                End = new CalDateTime(Convert.ToDateTime(e.EndTime), e.Guide.Timezone),
-                Description = e.Description,
-                Location = e.EventLocation.Location.Name
-            }));
+                var hashids = new HashidsNet.Hashids();
+                var eventIds = hashids.DecodeLong(eventHashids);
+                eventPredicate = guidebookEvent => eventIds.Contains(guidebookEvent.Id);
+            }
+
+            var calendar = new Calendar();
+            calendar.Events.AddRange(context.GuidebookEvent
+                .Where(eventPredicate)
+                .Select(e => new CalendarEvent
+                    {
+                        Uid = e.Id.ToString() + "_" + e.GuideId.ToString() + "@paxschedule.com",
+                        Summary = e.Name,
+                        Start = new CalDateTime(Convert.ToDateTime(e.StartTime), e.Guide.Timezone),
+                        End = new CalDateTime(Convert.ToDateTime(e.EndTime), e.Guide.Timezone),
+                        Description = e.Description,
+                        Location = e.EventLocation.Location.Name
+                    }));
 
             return Ok(calendar);
         }
