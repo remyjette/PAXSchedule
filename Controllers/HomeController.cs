@@ -65,6 +65,7 @@ namespace PAXScheduler.Controllers
                     Location = e.EventLocation.Location.Name
                 }));
 
+            Request.HttpContext.Response.Headers.Add("Content-Disposition", $"attachment; filename=\"{eventName}.ics\"");
             return Ok(calendar);
         }
 
