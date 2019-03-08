@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace PAXScheduler.GuidebookModels
+namespace PAXScheduler.Models.Gudebook
 {
     [Table("guidebook_poi")]
     public partial class GuidebookPoi

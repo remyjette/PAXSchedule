@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PAXScheduler.GuidebookModels;
+using PAXScheduler.Models.Gudebook;
 using System;
 using System.Collections.Generic;
 using System.Linq;

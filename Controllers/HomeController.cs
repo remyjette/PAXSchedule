@@ -10,7 +10,7 @@ using Ical.Net.DataTypes;
 using Ical.Net.Serialization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using PAXScheduler.GuidebookModels;
+using PAXScheduler.Models.Gudebook;
 using PAXScheduler.Models;
 using PAXScheduler.Services;
 

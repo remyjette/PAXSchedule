@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
-using PAXScheduler.GuidebookModels;
+using PAXScheduler.Models.Gudebook;
 using PAXScheduler.Models;
 using System;
 using System.Collections.Generic;
