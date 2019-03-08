@@ -3,6 +3,7 @@ using PAXScheduler.Models.Gudebook;
 using PAXScheduler.Services;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,6 +19,7 @@ namespace PAXScheduler.Models
         private readonly GuidebookService _guidebookService;
         private readonly SemaphoreSlim _configureSemaphore = new SemaphoreSlim(1);
         private DbContextOptions<GuidebookContext> _dbContextOptions;
+        private FileInfo _databasePath;
 
         private bool _configured = false;
         private DateTime _lastUpdated;
@@ -39,13 +41,21 @@ namespace PAXScheduler.Models
 
             await _configureSemaphore.WaitAsync();
 
+            // Configured is checked twice. First outside the semaphore so that once
+            // we've configured, we never need to wait on the semaphore since everything
+            // will be readonly. Second inside the semaphore in case two threads get in
+            // here at the same time.
             if (!Configured)
             {
-                // Configured is checked twice. First outside the semaphore so that once
-                // we've configured, we never need to wait on the semaphore since everything
-                // will be readonly. Second inside the semaphore in case two threads get in
-                // here at the same time.
-                _dbContextOptions = await _guidebookService.DownloadGuidebookDb(FullName);
+                if (_databasePath != null)
+                {
+                    // TODO: Do this on a background task with a delay to avoid breaking
+                    // active DbContexts that are still using this data source.
+                    // TODO: Cleanup on app shutdown
+                    _databasePath.Delete();
+                }
+
+                (_databasePath, _dbContextOptions) = await _guidebookService.DownloadGuidebookDb(FullName);
                 _lastUpdated = DateTime.Now;
                 _configured = true;
             }

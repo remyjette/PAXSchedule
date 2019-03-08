@@ -31,7 +31,7 @@ namespace PAXScheduler.Services
             };
         }
 
-        public async Task<DbContextOptions<GuidebookContext>> DownloadGuidebookDb(string eventName)
+        public async Task<(FileInfo databasePath, DbContextOptions<GuidebookContext> dbContextOptions)> DownloadGuidebookDb(string eventName)
         {
             using var client = _clientFactory.CreateClient();
 
@@ -44,13 +44,13 @@ namespace PAXScheduler.Services
             using var guidebookArchive = new ZipArchive(guidebookDatabaseStream);
             var database = guidebookArchive.GetEntry("guide.db");
 
-            var databasePath = Path.GetTempFileName(); // TODO clean this up when we're done using it
+            var databasePath = Path.GetTempFileName();
 
             database.ExtractToFile(databasePath, true);
             var optionsBuilder = new DbContextOptionsBuilder<GuidebookContext>();
             optionsBuilder.UseSqlite("Data Source=" + databasePath);
 
-            return optionsBuilder.Options;
+            return (new FileInfo(databasePath), optionsBuilder.Options);
         }
 
         public Event GetEvent(string eventName)
