@@ -35,6 +35,11 @@ namespace PAXScheduler
 
 
             services
+                .AddRouting(options =>
+                {
+                    options.LowercaseUrls = true;
+                    options.LowercaseQueryStrings = true;
+                })
                 .AddMvc(options =>
                 {
                     options.OutputFormatters.Add(new CalendarOutputFormatter());
