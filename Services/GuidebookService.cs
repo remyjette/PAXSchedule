@@ -44,7 +44,7 @@ namespace PAXScheduler.Services
             using var guidebookArchive = new ZipArchive(guidebookDatabaseStream);
             var database = guidebookArchive.GetEntry("guide.db");
 
-            var databasePath = Path.GetTempFileName();
+            var databasePath = Path.GetTempFileName(); // TODO clean this up when we're done using it
 
             database.ExtractToFile(databasePath, true);
             var optionsBuilder = new DbContextOptionsBuilder<GuidebookContext>();
