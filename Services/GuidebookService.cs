@@ -19,28 +19,28 @@ namespace PAXScheduler.Services
     {
         private readonly IHttpClientFactory _clientFactory;
 
-        private Dictionary<string, Event> _events;
+        private Dictionary<string, Show> _shows;
 
         public GuidebookService(IHttpClientFactory clientFactory)
         {
             _clientFactory = clientFactory;
 
-            _events = new Dictionary<string, Event>()
+            _shows = new Dictionary<string, Show>()
             {
-                { "paxeast2019", new Event("paxeast2019", "PAX East 2019", this) }
+                { "paxeast2019", new Show("paxeast2019", "PAX East 2019", this) }
             };
         }
 
-        public async Task<(FileInfo databasePath, DbContextOptions<GuidebookContext> dbContextOptions)> DownloadGuidebookDb(string eventName)
+        public async Task<(FileInfo databasePath, DbContextOptions<GuidebookContext> dbContextOptions)> DownloadGuidebookDb(string showName)
         {
             using var client = _clientFactory.CreateClient();
 
-            var searchResponse = await client.GetStringAsync("https://gears.guidebook.com/service/v2/search/?q=" + WebUtility.UrlEncode(eventName));
+            var searchResponse = await client.GetStringAsync("https://gears.guidebook.com/service/v2/search/?q=" + WebUtility.UrlEncode(showName));
             var j = JObject.Parse(searchResponse);
 
-            var eventIdentifier = j["data"].FirstOrDefault(x => x.Value<string>("name") == eventName)?.Value<string>("productIdentifier");
+            var showIdentifier = j["data"].FirstOrDefault(x => x.Value<string>("name") == showName)?.Value<string>("productIdentifier");
 
-            using var guidebookDatabaseStream = await client.GetStreamAsync($"https://gears.guidebook.com/service/v2/guides/{eventIdentifier}/bundle/");
+            using var guidebookDatabaseStream = await client.GetStreamAsync($"https://gears.guidebook.com/service/v2/guides/{showIdentifier}/bundle/");
             using var guidebookArchive = new ZipArchive(guidebookDatabaseStream);
             var database = guidebookArchive.GetEntry("guide.db");
 
@@ -53,9 +53,9 @@ namespace PAXScheduler.Services
             return (new FileInfo(databasePath), optionsBuilder.Options);
         }
 
-        public Event GetEvent(string eventName)
+        public Show GetShow(string showName)
         {
-            return _events[eventName];
+            return _shows[showName];
         }
     }
 }

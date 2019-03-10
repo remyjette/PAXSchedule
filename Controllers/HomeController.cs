@@ -30,11 +30,11 @@ namespace PAXScheduler.Controllers
             return View();
         }
 
-        [HttpGet("{eventName}/[action]")]
-        [HttpGet("{eventName}/[action]/{eventHashids}")]
-        public async Task<IActionResult> Download(string eventName, string eventHashids)
+        [HttpGet("{showName}/[action]")]
+        [HttpGet("{showName}/[action]/{eventHashids}")]
+        public async Task<IActionResult> Download(string showName, string eventHashids)
         {
-            using var context = await _guidebookService.GetEvent(eventName).GetDbContext();
+            using var context = await _guidebookService.GetShow(showName).GetDbContext();
 
             if (context == null)
             {
@@ -70,7 +70,7 @@ namespace PAXScheduler.Controllers
                 return NotFound();
             }
 
-            Request.HttpContext.Response.Headers.Add("Content-Disposition", $"attachment; filename=\"{eventName}.ics\"");
+            Request.HttpContext.Response.Headers.Add("Content-Disposition", $"attachment; filename=\"{showName}.ics\"");
             return Ok(calendar);
         }
 

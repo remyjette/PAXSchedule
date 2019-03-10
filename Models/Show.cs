@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace PAXScheduler.Models
 {
-    public class Event
+    public class Show
     {
         private static TimeSpan eventExpiration = new TimeSpan(1, 0, 0, 0);
 
@@ -25,7 +25,7 @@ namespace PAXScheduler.Models
         private DateTime _lastUpdated;
         public bool Configured { get { return _configured && _lastUpdated < DateTime.Now.Add(eventExpiration); } }
 
-        public Event(string name, string fullName, GuidebookService guidebookService)
+        public Show(string name, string fullName, GuidebookService guidebookService)
         {
             Name = name;
             FullName = fullName;
