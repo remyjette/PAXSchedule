@@ -10,9 +10,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using PAXScheduler.Services;
+using PAXSchedule.Services;
 
-namespace PAXScheduler
+namespace PAXSchedule
 {
     public class Startup
     {

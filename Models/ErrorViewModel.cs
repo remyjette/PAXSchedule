@@ -1,6 +1,6 @@
 using System;
 
-namespace PAXScheduler.Models
+namespace PAXSchedule.Models
 {
     public class ErrorViewModel
     {

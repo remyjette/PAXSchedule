@@ -10,11 +10,11 @@ using Ical.Net.DataTypes;
 using Ical.Net.Serialization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using PAXScheduler.Models.Gudebook;
-using PAXScheduler.Models;
-using PAXScheduler.Services;
+using PAXSchedule.Models.Gudebook;
+using PAXSchedule.Models;
+using PAXSchedule.Services;
 
-namespace PAXScheduler.Controllers
+namespace PAXSchedule.Controllers
 {
     public class HomeController : Controller
     {

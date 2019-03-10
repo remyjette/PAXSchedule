@@ -2,7 +2,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace PAXScheduler.Models.Gudebook
+namespace PAXSchedule.Models.Gudebook
 {
     public partial class GuidebookContext : DbContext
     {

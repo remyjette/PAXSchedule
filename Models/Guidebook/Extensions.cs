@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PAXScheduler.Models.Gudebook
+namespace PAXSchedule.Models.Gudebook
 {
     // The Guidebook SQLite Database doesn't configure Foreign Keys. As a result,
     // relationships between tables aren't created when the classes are generated

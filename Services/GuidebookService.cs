@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
-using PAXScheduler.Models.Gudebook;
-using PAXScheduler.Models;
+using PAXSchedule.Models.Gudebook;
+using PAXSchedule.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -13,7 +13,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace PAXScheduler.Services
+namespace PAXSchedule.Services
 {
     public class GuidebookService
     {

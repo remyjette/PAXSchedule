@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using PAXScheduler.Models.Gudebook;
-using PAXScheduler.Services;
+using PAXSchedule.Models.Gudebook;
+using PAXSchedule.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace PAXScheduler.Models
+namespace PAXSchedule.Models
 {
     public class Show
     {
