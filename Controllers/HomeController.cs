@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using PAXSchedule.Models.Gudebook;
 using PAXSchedule.Models;
 using PAXSchedule.Services;
+using Microsoft.AspNetCore.Http.Features;
 
 namespace PAXSchedule.Controllers
 {
@@ -39,17 +40,8 @@ namespace PAXSchedule.Controllers
             return View();
         }
 
-        [HttpGet("{showName}/[action]")]
-        [HttpGet("{showName}/[action]/{eventHashids}")]
-        public async Task<IActionResult> Download(string showName, string eventHashids)
+        private IQueryable<GuidebookEvent> GetEvents(GuidebookContext context, string eventHashids)
         {
-            using var context = await _guidebookService.GetShow(showName).GetDbContext();
-
-            if (context == null)
-            {
-                return NotFound();
-            }
-
             // eventPredicate will determine if a given event should be included in the calendar
             // If eventHashIds is null, include all events
             Expression<Func<GuidebookEvent, bool>> eventPredicate = calendarEvent => true;
@@ -61,10 +53,54 @@ namespace PAXSchedule.Controllers
                 eventPredicate = guidebookEvent => eventIds.Contains(guidebookEvent.Id);
             }
 
+            return context.GuidebookEvent.Where(eventPredicate);
+        }
+
+        [HttpGet("{showName}/[action]")]
+        [HttpGet("{showName}/[action]/{eventHashids}")]
+        [Produces("application/json")]
+        public async Task<IActionResult> Events(string showName, string eventHashids)
+        {
+            // Workaround for https://github.com/aspnet/AspNetCore/issues/7644
+            var syncIOFeature = HttpContext.Features.Get<IHttpBodyControlFeature>();
+            if (syncIOFeature != null)
+            {
+                syncIOFeature.AllowSynchronousIO = true;
+            }
+
+            using var context = await _guidebookService.GetShow(showName).GetDbContext();
+
+            if (context == null)
+            {
+                return NotFound();
+            }
+
+            var events = await (GetEvents(context, eventHashids)).ToListAsync();
+
+            if (!events.Any())
+            {
+                return NotFound();
+            }
+
+            return Ok(events);
+        }
+
+        [HttpGet("{showName}/[action]")]
+        [HttpGet("{showName}/[action]/{eventHashids}")]
+        [Produces("text/calendar")]
+        public async Task<IActionResult> Calendar(string showName, string eventHashids)
+        {
+            using var context = await _guidebookService.GetShow(showName).GetDbContext();
+
+            var events = GetEvents(context, eventHashids);
+
+            if (!events.Any())
+            {
+                return NotFound();
+            }
+
             var calendar = new Calendar();
-            calendar.Events.AddRange(context.GuidebookEvent
-                .Where(eventPredicate)
-                .Select(e => new CalendarEvent
+            calendar.Events.AddRange(events.Select(e => new CalendarEvent
                 {
                     Uid = e.Id.ToString() + "_" + e.GuideId.ToString() + "@paxschedule.com",
                     Summary = e.Name,
@@ -74,15 +110,8 @@ namespace PAXSchedule.Controllers
                     Location = e.EventLocation.Location.Name
                 }));
 
-            if (!calendar.Events.Any())
-            {
-                return NotFound();
-            }
-
-            Request.HttpContext.Response.Headers.Add("Content-Disposition", $"attachment; filename=\"{showName}.ics\"");
             return Ok(calendar);
         }
-
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
