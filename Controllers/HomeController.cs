@@ -27,6 +27,15 @@ namespace PAXSchedule.Controllers
 
         public IActionResult Index()
         {
+            return RedirectToAction(nameof(ViewShow), new { showName = "paxeast2019" });
+        }
+
+        [HttpGet("{showName}")]
+        public IActionResult ViewShow(string showName)
+        {
+            var show = _guidebookService.GetShow(showName);
+
+            ViewData["ShowName"] = show.FullName;
             return View();
         }
 
@@ -74,10 +83,6 @@ namespace PAXSchedule.Controllers
             return Ok(calendar);
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
