@@ -102,12 +102,18 @@ $.getJSON(eventsUrl)
 
             events: events,
 
+            eventRender: function (info) {
+                $(info.el).find('.fc-title').on('click', e => {
+                    console.log('Clicked title: ' + info.event.title);
+                    e.stopPropagation();
+                });
+            },
+
             eventClick: function (info) {
-                console.log(info.event.extendedProps.description);
+                console.log('Clicked event: ' + info.event.title);
             },
         });
 
         calendar.render();
-
     });
 });
