@@ -100,8 +100,8 @@ $.getJSON(eventsUrl)
 
             events: events,
 
-            eventClick: function (a, b, c, d, e) {
-                console.log('event');
+            eventClick: function (info) {
+                console.log(info.event.extendedProps.description);
             },
         });
 
