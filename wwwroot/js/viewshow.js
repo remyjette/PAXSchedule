@@ -4,64 +4,62 @@
 // Write your JavaScript code.
 
 $(function () { // document ready
+$.getJSON(eventsUrl)
+    .done(function (events) {
+        var locations = _.chain(events).map(e => e.eventLocation.location).uniq(l => l.id).map(l => _.extend(l, { 'title': l.name })).value();
 
-    var calendarElement = document.getElementById('calendar');
-    var calendar = new FullCalendar.Calendar(calendarElement, {
-        schedulerLicenseKey: "CC-Attribution-NonCommercial-NoDerivatives",
-        defaultView: 'agendaDay',
-        validRange: {
-            start: '2019-03-28',
-            end: '2019-04-01'
-        },
-        editable: false,
-        selectable: true,
-        eventLimit: true, // allow "more" link when too many events
-        header: {
-            left: 'prev,next',
-            center: 'title',
-        },
-        titleFormat: { // will produce something like "Tuesday, September 18, 2018"
-            month: 'long',
-            year: 'numeric',
-            day: 'numeric',
-            weekday: 'long'
-        },
-        views: {
-            agendaTwoDay: {
-                type: 'agenda',
-                duration: { days: 2 },
+        var events = _(events).map(e => _.extend(e, { 'title': e.name, 'resourceId': e.locations, 'start': e.startTime, 'end': e.endTime }))
 
-                // views that are more than a day will NOT do this behavior by default
-                // so, we need to explicitly enable it
-                groupByResource: true
 
-                //// uncomment this line to group by day FIRST with resources underneath
-                //groupByDateAndResource: true
-            }
-        },
+        var calendarElement = document.getElementById('calendar');
+        $(calendarElement).empty();
+        var calendar = new FullCalendar.Calendar(calendarElement, {
+            schedulerLicenseKey: "CC-Attribution-NonCommercial-NoDerivatives",
+            defaultView: 'agendaDay',
+            validRange: {
+                start: '2019-03-28',
+                end: '2019-04-01'
+            },
+            editable: false,
+            selectable: true,
+            eventLimit: true, // allow "more" link when too many events
+            header: {
+                left: 'prev,next',
+                center: 'title',
+            },
+            titleFormat: { // will produce something like "Tuesday, September 18, 2018"
+                month: 'long',
+                year: 'numeric',
+                day: 'numeric',
+                weekday: 'long'
+            },
+            views: {
+                agendaTwoDay: {
+                    type: 'agenda',
+                    duration: { days: 2 },
 
-        //// uncomment this line to hide the all-day slot
-        allDaySlot: false,
+                    // views that are more than a day will NOT do this behavior by default
+                    // so, we need to explicitly enable it
+                    groupByResource: true
 
-        resources: [
-            { id: 'a', title: 'Room A' },
-            { id: 'b', title: 'Room B', eventColor: 'green' },
-            { id: 'c', title: 'Room C', eventColor: 'orange' },
-            { id: 'd', title: 'Room D', eventColor: 'red' }
-        ],
-        events: [
-            { id: '1', resourceId: 'a', start: '2018-04-06', end: '2018-04-08', title: 'event 1' },
-            { id: '2', resourceId: 'a', start: '2018-04-07T09:00:00', end: '2018-04-07T14:00:00', title: 'event 2' },
-            { id: '3', resourceId: 'b', start: '2018-04-07T12:00:00', end: '2018-04-08T06:00:00', title: 'event 3' },
-            { id: '4', resourceId: 'c', start: '2018-04-07T07:30:00', end: '2018-04-07T09:30:00', title: 'event 4' },
-            { id: '5', resourceId: 'd', start: '2019-03-30T10:00:00', end: '2019-03-30T15:00:00', title: 'event 5', test: "test" }
-        ],
+                    //// uncomment this line to group by day FIRST with resources underneath
+                    //groupByDateAndResource: true
+                }
+            },
 
-        eventClick: function (a, b, c, d, e) {
-            console.log('event');
-        },
+            //// uncomment this line to hide the all-day slot
+            allDaySlot: false,
+
+            resources: locations,
+
+            events: events,
+
+            eventClick: function (a, b, c, d, e) {
+                console.log('event');
+            },
+        });
+
+        calendar.render();
+
     });
-
-    calendar.render();
-
 });

@@ -37,7 +37,9 @@ namespace PAXSchedule.Controllers
             var show = _guidebookService.GetShow(showName);
 
             ViewData["ShowName"] = show.FullName;
-            return View();
+            ViewData["EventsUrl"] = Url.Action(nameof(Events), new { showName });
+            ViewData["CalendarUrl"] = Url.Action(nameof(Calendar), new { showName });
+            return View(show);
         }
 
         private IQueryable<GuidebookEvent> GetEvents(GuidebookContext context, string eventHashids)
@@ -75,7 +77,7 @@ namespace PAXSchedule.Controllers
                 return NotFound();
             }
 
-            var events = await (GetEvents(context, eventHashids)).ToListAsync();
+            var events = await GetEvents(context, eventHashids).Include(e => e.EventLocation.Location).ToListAsync();
 
             if (!events.Any())
             {

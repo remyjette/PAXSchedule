@@ -2,9 +2,17 @@
     ViewData["Title"] = ViewData["ShowName"];
 }
 
+<script type="text/javascript">
+    var eventsUrl = "@ViewData["EventsUrl"]";
+    var calendarUrl = "@ViewData["CalendarUrl"]";
+</script>
+
 <div class="text-center">
     <h1 class="display-4">@ViewData["ShowName"]</h1>
-    <p>Calendar should go here.</p>
 </div>
 
-<div id="calendar"></div>
+<div id="calendar">
+    <div class="spinner-border centerblock" style="width: 3rem; height: 3rem;" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+</div>

@@ -33,10 +33,11 @@ namespace PAXSchedule
                     options.LowercaseQueryStrings = true;
                 })
                 .AddMvc(options =>
-                {
-                    options.OutputFormatters.Add(new CalendarOutputFormatter());
-                })
-                .AddNewtonsoftJson();
+                    options.OutputFormatters.Add(new CalendarOutputFormatter())
+                )
+                .AddNewtonsoftJson(options =>
+                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+                );
 
             services
                 .AddSingleton<GuidebookService>()
