@@ -8,11 +8,24 @@ $.getJSON(eventsUrl)
     .done(function (events) {
         var locations = _.chain(events).map(e => e.eventLocation.location).uniq(l => l.id).map(l => _.extend(l, { 'title': l.name })).value();
 
-        var events = _(events).map(e => _.extend(e, { 'title': e.name, 'resourceId': e.locations, 'start': e.startTime, 'end': e.endTime }))
+        var events = _(events).map(e => _.extend(e, { 'title': e.name, 'resourceId': e.locations, 'start': e.startTime, 'end': e.endTime }));
 
+        // TODO: consolidate these two
+        var minTime = _.chain(events).pluck('startTime').map(dateString => {
+            return JSJoda.LocalDateTime.ofInstant(JSJoda.Instant.ofEpochMilli(new Date(dateString).getTime())).toLocalTime();
+        })
+            .min(x => x.toSecondOfDay())
+            .value()
+            .toString();
+        var maxTime = _.chain(events).pluck('endTime').map(dateString => {
+            return JSJoda.LocalDateTime.ofInstant(JSJoda.Instant.ofEpochMilli(new Date(dateString).getTime())).toLocalTime();
+        })
+            .max(x => x.toSecondOfDay())
+            .value()
+            .toString();
 
         var calendarElement = document.getElementById('calendar');
-        $(calendarElement).empty();
+        $(calendarElement).empty(); // remove loading icon
         var calendar = new FullCalendar.Calendar(calendarElement, {
             schedulerLicenseKey: "CC-Attribution-NonCommercial-NoDerivatives",
             defaultView: 'agendaDay',
@@ -20,6 +33,8 @@ $.getJSON(eventsUrl)
                 start: '2019-03-28',
                 end: '2019-04-01'
             },
+            minTime: minTime,
+            maxTime: maxTime,
             editable: false,
             selectable: true,
             eventLimit: true, // allow "more" link when too many events
