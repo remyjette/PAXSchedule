@@ -8,18 +8,46 @@ $.getJSON(eventsUrl)
     .done(function (events) {
         var locations = _.chain(events).map(e => e.eventLocation.location).uniq(l => l.id).map(l => _.extend(l, { 'title': l.name })).value();
 
-        var events = _(events).map(e => _.extend(e, { 'title': e.name, 'resourceId': e.locations, 'start': e.startTime, 'end': e.endTime }));
+        // Function to determine if background color should have white or black text to provide
+        // sufficient contrast http://www.w3.org/TR/AERT#color-contrast
+        var shouldUseBlackText = function(hexValue) {
+            var result = /^#?([A-Fa-f\d]{2})([A-Fa-f\d]{2})([A-Fa-f\d]{2})$/i.exec(hexValue);
+            if (result == null) {
+                return true; // Couldn't parse the hex value, default to black text.
+            }
+            var rgb = {
+                r: parseInt(result[1], 16),
+                g: parseInt(result[2], 16),
+                b: parseInt(result[3], 16)
+            };
+
+            return Math.round((
+                (rgb['r'] * 299) +
+                (rgb['g'] * 587) +
+                (rgb['b'] * 114)) / 1000) > 125;
+        }
+
+        var events = _(events).map(e =>
+            _.extend(e, {
+                'title': e.name,
+                'resourceId': e.locations,
+                'start': e.startTime,
+                'end': e.endTime,
+                'color': e.scheduleTracks[0].schedule.hexValue,
+                'textColor': shouldUseBlackText(e.scheduleTracks[0].schedule.hexValue) ? "black" : "white"
+            })
+        );
 
         // TODO: consolidate these two
-        var minTime = _.chain(events).pluck('startTime').map(dateString => {
-            return JSJoda.LocalDateTime.ofInstant(JSJoda.Instant.ofEpochMilli(new Date(dateString).getTime())).toLocalTime();
-        })
+        var minTime = _.chain(events).pluck('startTime').map(dateString =>
+            JSJoda.LocalDateTime.ofInstant(JSJoda.Instant.ofEpochMilli(new Date(dateString).getTime())).toLocalTime()
+        )
             .min(x => x.toSecondOfDay())
             .value()
             .toString();
-        var maxTime = _.chain(events).pluck('endTime').map(dateString => {
-            return JSJoda.LocalDateTime.ofInstant(JSJoda.Instant.ofEpochMilli(new Date(dateString).getTime())).toLocalTime();
-        })
+        var maxTime = _.chain(events).pluck('endTime').map(dateString =>
+            JSJoda.LocalDateTime.ofInstant(JSJoda.Instant.ofEpochMilli(new Date(dateString).getTime())).toLocalTime()
+        )
             .max(x => x.toSecondOfDay())
             .value()
             .toString();
@@ -62,6 +90,8 @@ $.getJSON(eventsUrl)
                     //groupByDateAndResource: true
                 }
             },
+
+            resourceOrder: 'title',
 
             //// uncomment this line to hide the all-day slot
             allDaySlot: false,

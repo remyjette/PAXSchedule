@@ -77,7 +77,11 @@ namespace PAXSchedule.Controllers
                 return NotFound();
             }
 
-            var events = await GetEvents(context, eventHashids).Include(e => e.EventLocation.Location).ToListAsync();
+            var events = await GetEvents(context, eventHashids)
+                .Include(e => e.EventLocation.Location)
+                .Include(e => e.ScheduleTracks)
+                    .ThenInclude(st => st.Schedule)
+                .ToListAsync();
 
             if (!events.Any())
             {
