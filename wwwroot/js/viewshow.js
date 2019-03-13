@@ -6,7 +6,7 @@
 $(function () { // document ready
 $.getJSON(eventsUrl)
     .done(function (events) {
-        var locations = _.chain(events).map(e => e.eventLocation.location).uniq(l => l.id).map(l => _.extend(l, { 'title': l.name })).value();
+        var locations = _.chain(events).map(e => e.eventLocation.location).uniq(l => l.id).value();
 
         // Function to determine if background color should have white or black text to provide
         // sufficient contrast http://www.w3.org/TR/AERT#color-contrast
@@ -92,6 +92,8 @@ $.getJSON(eventsUrl)
             },
 
             resourceOrder: 'title',
+            filterResourcesWithEvents: true,
+            resourceText: resource => resource.extendedProps.name,
 
             //// uncomment this line to hide the all-day slot
             allDaySlot: false,
