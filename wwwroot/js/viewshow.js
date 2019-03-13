@@ -91,7 +91,7 @@ $.getJSON(eventsUrl)
                 }
             },
 
-            resourceOrder: 'title',
+            resourceOrder: 'name',
             filterResourcesWithEvents: true,
             resourceText: resource => resource.extendedProps.name,
 
