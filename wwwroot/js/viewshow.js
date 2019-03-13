@@ -29,6 +29,7 @@ $.getJSON(eventsUrl)
         var calendar = new FullCalendar.Calendar(calendarElement, {
             schedulerLicenseKey: "CC-Attribution-NonCommercial-NoDerivatives",
             defaultView: 'agendaDay',
+            height: 'auto',
             validRange: {
                 start: '2019-03-28',
                 end: '2019-04-01'
