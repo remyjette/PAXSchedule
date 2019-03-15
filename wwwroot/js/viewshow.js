@@ -3,7 +3,30 @@
 
 // Write your JavaScript code.
 
+var selectedEvents = []; // TODO: initialize from URL
+// This function should be called every time selectedEvents is modified.
+// TODO: Use Proxy to do this automatically
+function onSelectedEventsChanged() {
+    console.log(selectedEvents);
+}
+onSelectedEventsChanged();
+
+// Define the eventRender function globally instead of inline so we can call it directly from the eventClick event.
+// While we could just use calendar.render(), that introduces latency - just re-applying the render effect on the
+// specific event has much better performance.
+function eventRender(info) {
+    var $titleDiv = $(info.el).find('.fc-title');
+    var index = selectedEvents.indexOf(info.event.id);
+
+    if (index == -1) {
+        $titleDiv.css('font-weight', 'normal');
+    } else {
+        $titleDiv.css('font-weight', 'bold');
+    }
+}
+
 $(function () { // document ready
+
 $.getJSON(eventsUrl)
     .done(function (events) {
         var locations = _.chain(events).map(e => e.eventLocation.location).uniq(l => l.id).value();
@@ -92,10 +115,21 @@ $.getJSON(eventsUrl)
                     console.log('Clicked title: ' + info.event.title);
                     e.stopPropagation();
                 });
+
+                eventRender(info);
             },
 
             eventClick: function (info) {
-                console.log('Clicked event: ' + info.event.title);
+                var index = selectedEvents.indexOf(info.event.id);
+                if (index != -1) {
+                    selectedEvents.splice(index, 1);
+                } else {
+                    selectedEvents.push(info.event.id);
+                }
+
+                eventRender(info);
+
+                onSelectedEventsChanged();
             },
         });
 
