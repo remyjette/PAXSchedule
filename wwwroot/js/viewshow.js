@@ -66,7 +66,6 @@ $.getJSON(eventsUrl)
             maxTime: maxTime,
             editable: false,
             selectable: true,
-            eventLimit: true, // allow "more" link when too many events
             header: {
                 left: 'prev,next',
                 center: 'title',
@@ -77,25 +76,11 @@ $.getJSON(eventsUrl)
                 day: 'numeric',
                 weekday: 'long'
             },
-            views: {
-                agendaTwoDay: {
-                    type: 'agenda',
-                    duration: { days: 2 },
-
-                    // views that are more than a day will NOT do this behavior by default
-                    // so, we need to explicitly enable it
-                    groupByResource: true
-
-                    //// uncomment this line to group by day FIRST with resources underneath
-                    //groupByDateAndResource: true
-                }
-            },
 
             resourceOrder: 'name',
             filterResourcesWithEvents: true,
             resourceText: resource => resource.extendedProps.name,
 
-            //// uncomment this line to hide the all-day slot
             allDaySlot: false,
 
             resources: locations,
