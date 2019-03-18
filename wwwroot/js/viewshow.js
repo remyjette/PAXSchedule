@@ -16,6 +16,7 @@ $(function () { // document ready
     function onSelectedEventsChanged() {
         var hash = hashids.encode(...selectedEvents);
         window.history.replaceState({ hashids: hash }, "" /* title */, viewShowUrl + "/" + hash);
+        $("#calendarUrl input").val(window.location.origin + calendarUrl + "/" + hash);
     }
     onSelectedEventsChanged();
 
@@ -49,6 +50,8 @@ $(function () { // document ready
 
     $.getJSON(eventsUrl)
         .done(function (events) {
+            $("#calendarUrl").show();
+
             var locations = _.chain(events).map(e => e.eventLocation.location).uniq(l => l.id).value();
 
             var events = _(events).map(e =>

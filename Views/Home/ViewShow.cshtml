@@ -12,8 +12,12 @@
     <h1 class="display-4">@ViewData["ShowName"]</h1>
 </div>
 
+<div id="calendarUrl" style="display: none">
+    <input class="form-control form-control-lg center-block" type="text" readonly />
+</div>
+
 <div id="calendar">
-    <div class="spinner-border centerblock" style="width: 3rem; height: 3rem;" role="status">
+    <div class="spinner-border center-block" style="width: 3rem; height: 3rem;" role="status">
         <span class="sr-only">Loading...</span>
     </div>
 </div>

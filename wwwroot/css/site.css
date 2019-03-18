@@ -63,8 +63,13 @@ body {
     margin: 0 20px 0 20px;
 }
 
-.centerblock {
+.center-block {
     margin-left: auto;
     margin-right: auto;
     display: block;
+}
+
+#calendarUrl input {
+    background-color: #fff;
+    width: 800px;
 }
