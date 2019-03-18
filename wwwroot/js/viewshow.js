@@ -117,14 +117,7 @@ $(function () { // document ready
 
                 events: events,
 
-                eventRender: function (info) {
-                    $(info.el).find('.fc-title').on('click', e => {
-                        console.log('Clicked title: ' + info.event.title);
-                        e.stopPropagation();
-                    });
-
-                    eventRender(info);
-                },
+                eventRender: eventRender,
 
                 eventClick: function (info) {
                     var id = parseInt(info.event.id, 10);
