@@ -98,7 +98,8 @@ namespace PAXSchedule.Controllers
         [Produces("text/calendar")]
         public async Task<IActionResult> Calendar(string showName, string eventHashids)
         {
-            using var context = await _guidebookService.GetShow(showName).GetDbContext();
+            var show = _guidebookService.GetShow(showName);
+            using var context = await show.GetDbContext();
 
             var events = GetEvents(context, eventHashids);
 
@@ -108,6 +109,7 @@ namespace PAXSchedule.Controllers
             }
 
             var calendar = new Calendar();
+            calendar.Properties.Add(new CalendarProperty("X-WR-CALNAME", show.FullName));
             calendar.Events.AddRange(events.Select(e => new CalendarEvent
                 {
                     Uid = e.Id.ToString() + "_" + e.GuideId.ToString() + "@paxschedule.com",
