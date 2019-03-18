@@ -25,6 +25,10 @@
         {
             "library": "js-joda@1.9.3",
             "destination": "wwwroot/lib/js-joda/"
+        },
+        {
+            "library": "tinycolor@1.4.1",
+            "destination": "wwwroot/lib/tinycolor/"
         }
     ]
 }

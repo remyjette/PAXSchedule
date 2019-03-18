@@ -23,13 +23,26 @@ $(function () { // document ready
     // While we could just use calendar.render(), that introduces latency - just re-applying the render effect on the
     // specific event has much better performance.
     function eventRender(info) {
-        var $titleDiv = $(info.el).find('.fc-title');
+        var $el = $(info.el);
+        var $bgDiv = $el.find('.fc-bg');
+        var $titleDiv = $el.find('.fc-title');
 
         var index = selectedEvents.indexOf(parseInt(info.event.id, 10));
 
         if (index == -1) {
+            // TODO use the original value instead of hardcoding what the original value should be.
+            $el.css('background-color', info.event.backgroundColor);
+            $bgDiv.css('margin', 0);
+            $bgDiv.css('opacity', 0.25);
             $titleDiv.css('font-weight', 'normal');
         } else {
+            var color = tinycolor(info.event.backgroundColor);
+            if (color.isLight()) {
+                $el.css('background-color', color.darken(15));
+            } else {
+                $bgDiv.css('opacity', 0.15);
+            }
+            $bgDiv.css('margin', '1px');
             $titleDiv.css('font-weight', 'bold');
         }
     }
@@ -38,25 +51,6 @@ $(function () { // document ready
         .done(function (events) {
             var locations = _.chain(events).map(e => e.eventLocation.location).uniq(l => l.id).value();
 
-            // Function to determine if background color should have white or black text to provide
-            // sufficient contrast http://www.w3.org/TR/AERT#color-contrast
-            var shouldUseBlackText = function (hexValue) {
-                var result = /^#?([A-Fa-f\d]{2})([A-Fa-f\d]{2})([A-Fa-f\d]{2})$/i.exec(hexValue);
-                if (result == null) {
-                    return true; // Couldn't parse the hex value, default to black text.
-                }
-                var rgb = {
-                    r: parseInt(result[1], 16),
-                    g: parseInt(result[2], 16),
-                    b: parseInt(result[3], 16)
-                };
-
-                return Math.round((
-                    (rgb['r'] * 299) +
-                    (rgb['g'] * 587) +
-                    (rgb['b'] * 114)) / 1000) > 125;
-            }
-
             var events = _(events).map(e =>
                 _.extend(e, {
                     'title': e.name,
@@ -64,7 +58,7 @@ $(function () { // document ready
                     'start': e.startTime,
                     'end': e.endTime,
                     'color': e.scheduleTracks[0].schedule.hexValue,
-                    'textColor': shouldUseBlackText(e.scheduleTracks[0].schedule.hexValue) ? "black" : "white"
+                    'textColor': tinycolor(e.scheduleTracks[0].schedule.hexValue).isLight() ? "black" : "white"
                 })
             );
 
