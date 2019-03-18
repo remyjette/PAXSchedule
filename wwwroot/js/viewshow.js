@@ -4,6 +4,16 @@
 // Write your JavaScript code.
 
 $(function () { // document ready
+    $("#calendarUrl input").on('click', function () {
+        $(this).select();
+    });
+    $("#calendarUrl button")
+        .on('click', function () {
+            $("#calendarUrl input").select();
+            document.execCommand('copy');
+            setTimeout(() => $(this).tooltip('hide'), 1000);
+        })
+        .tooltip({ trigger: "click" });
 
     var hashids = new Hashids();
 

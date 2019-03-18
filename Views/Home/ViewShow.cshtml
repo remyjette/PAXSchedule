@@ -12,8 +12,13 @@
     <h1 class="display-4">@ViewData["ShowName"]</h1>
 </div>
 
-<div id="calendarUrl" style="display: none">
-    <input class="form-control form-control-lg center-block" type="text" readonly />
+<div id="calendarUrl" class="center-block" style="display: none">
+    <div class="input-group">
+        <input class="form-control border-right-0" type="text" readonly />
+        <span class="input-group-btn">
+            <button class="btn btn-outline-secondary rounded-left-0" type="button" data-toggle="tooltip" title="Copied!">Copy</button>
+        </span>
+    </div>
 </div>
 
 <div id="calendar">

@@ -69,7 +69,14 @@ body {
     display: block;
 }
 
+#calendarUrl {
+    width: 800px;
+}
 #calendarUrl input {
     background-color: #fff;
-    width: 800px;
+}
+
+.rounded-left-0 {
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
 }
