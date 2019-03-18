@@ -3,11 +3,16 @@
 
 // Write your JavaScript code.
 
+$(function () { // document ready
+
 var selectedEvents = []; // TODO: initialize from URL
 // This function should be called every time selectedEvents is modified.
 // TODO: Use Proxy to do this automatically
 function onSelectedEventsChanged() {
     console.log(selectedEvents);
+    var hashids = new Hashids();
+    var hash = hashids.encode(...(_(selectedEvents).map(x => parseInt(x, 10))));
+    console.log(hash);
 }
 onSelectedEventsChanged();
 
@@ -24,8 +29,6 @@ function eventRender(info) {
         $titleDiv.css('font-weight', 'bold');
     }
 }
-
-$(function () { // document ready
 
 $.getJSON(eventsUrl)
     .done(function (events) {

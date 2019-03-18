@@ -32,6 +32,7 @@ namespace PAXSchedule.Controllers
         }
 
         [HttpGet("{showName}")]
+        [HttpGet("{showName}/{hashids}")] // Ignored by the controller, will be read by the page Javascript
         public IActionResult ViewShow(string showName)
         {
             var show = _guidebookService.GetShow(showName);
