@@ -5,12 +5,16 @@
 
 $(function () { // document ready
 
-var selectedEvents = []; // TODO: initialize from URL
+var hashids = new Hashids();
+
+var initialUrl = location.pathname;
+var initialHash = initialUrl.replace(viewShowUrl + "/", "");
+var selectedEvents = hashids.decode(initialHash);
+
 // This function should be called every time selectedEvents is modified.
 // TODO: Use Proxy to do this automatically
 function onSelectedEventsChanged() {
-    var hashids = new Hashids();
-    var hash = hashids.encode(...(_(selectedEvents).map(x => parseInt(x, 10))));
+    var hash = hashids.encode(...selectedEvents);
     window.history.replaceState({ hashids: hash }, "" /* title */, viewShowUrl + "/" + hash);
 }
 onSelectedEventsChanged();
@@ -20,7 +24,8 @@ onSelectedEventsChanged();
 // specific event has much better performance.
 function eventRender(info) {
     var $titleDiv = $(info.el).find('.fc-title');
-    var index = selectedEvents.indexOf(info.event.id);
+
+    var index = selectedEvents.indexOf(parseInt(info.event.id, 10));
 
     if (index == -1) {
         $titleDiv.css('font-weight', 'normal');
@@ -122,11 +127,12 @@ $.getJSON(eventsUrl)
             },
 
             eventClick: function (info) {
-                var index = selectedEvents.indexOf(info.event.id);
+                var id = parseInt(info.event.id, 10);
+                var index = selectedEvents.indexOf(id);
                 if (index != -1) {
                     selectedEvents.splice(index, 1);
                 } else {
-                    selectedEvents.push(info.event.id);
+                    selectedEvents.push(id);
                 }
 
                 eventRender(info);
