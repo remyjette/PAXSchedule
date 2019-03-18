@@ -9,10 +9,9 @@ var selectedEvents = []; // TODO: initialize from URL
 // This function should be called every time selectedEvents is modified.
 // TODO: Use Proxy to do this automatically
 function onSelectedEventsChanged() {
-    console.log(selectedEvents);
     var hashids = new Hashids();
     var hash = hashids.encode(...(_(selectedEvents).map(x => parseInt(x, 10))));
-    console.log(hash);
+    window.history.replaceState({ hashids: hash }, "" /* title */, viewShowUrl + "/" + hash);
 }
 onSelectedEventsChanged();
 

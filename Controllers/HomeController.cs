@@ -38,8 +38,9 @@ namespace PAXSchedule.Controllers
             var show = _guidebookService.GetShow(showName);
 
             ViewData["ShowName"] = show.FullName;
-            ViewData["EventsUrl"] = Url.Action(nameof(Events), new { showName });
             ViewData["CalendarUrl"] = Url.Action(nameof(Calendar), new { showName });
+            ViewData["EventsUrl"] = Url.Action(nameof(Events), new { showName });
+            ViewData["ViewShowUrl"] = Url.Action(nameof(ViewShow), new { showName, hashids = "" });
             return View(show);
         }
 
