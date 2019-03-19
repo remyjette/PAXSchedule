@@ -64,6 +64,16 @@ $(function () { // document ready
 
             var locations = _.chain(events).map(e => e.eventLocation.location).uniq(l => l.id).value();
 
+            var tracks = _.chain(events).map(e => _(e.scheduleTracks).pluck('schedule')).flatten().uniq(s => s.id).value();
+            var panelTrack = _(tracks).find(t => t.name == "Panel");
+            if (panelTrack) {
+                // Since we have the panel track, remove any tracks for which all events overlap
+                var getEventsForTrack = track => _(events).filter(e => _.chain(e.scheduleTracks).pluck('schedule').pluck('id').contains(track.id).value());
+                var panelEvents = getEventsForTrack(panelTrack);
+                tracks = _.chain(tracks).without(panelTrack).filter(track => _.chain(getEventsForTrack(track)).difference(panelEvents).size().value() > 0).value();
+                tracks.unshift(panelTrack);
+            }
+
             var events = _(events).map(e =>
                 _.extend(e, {
                     'title': e.name,
