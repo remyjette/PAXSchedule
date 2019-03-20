@@ -98,6 +98,8 @@ namespace PAXSchedule.Controllers
         [Produces("text/calendar")]
         public async Task<IActionResult> Calendar(string showName, string eventHashids)
         {
+            HttpContext.Items.Add("filename", showName + ".ics");
+
             var show = _guidebookService.GetShow(showName);
             using var context = await show.GetDbContext();
 

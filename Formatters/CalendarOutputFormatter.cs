@@ -32,6 +32,16 @@ namespace PAXSchedule
 
         public override Task WriteResponseBodyAsync(OutputFormatterWriteContext context, Encoding selectedEncoding)
         {
+            string filename = context.HttpContext.Items["filename"] as string;
+            if (!string.IsNullOrWhiteSpace(filename))
+            {
+                if (!filename.EndsWith(".ics"))
+                {
+                    filename += ".ics";
+                }
+                context.HttpContext.Response.Headers.Add("Content-Disposition", $"attachment; filename=\"{filename}\"");
+            }
+
             var calendar = context.Object as Calendar;
             var serializer = new CalendarSerializer(new SerializationContext());
             var serializedCalendar = serializer.SerializeToString(calendar);
