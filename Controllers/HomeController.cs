@@ -112,6 +112,11 @@ namespace PAXSchedule.Controllers
 
             var calendar = new Calendar();
             calendar.Properties.Add(new CalendarProperty("X-WR-CALNAME", show.FullName));
+            var timezone = context.GuidebookGuide.FirstOrDefault()?.Timezone;
+            if (timezone != null)
+            {
+                calendar.AddTimeZone(timezone);
+            }
             calendar.Events.AddRange(events.Select(e => new CalendarEvent
                 {
                     Uid = e.Id.ToString() + "_" + e.GuideId.ToString() + "@paxschedule.com",
