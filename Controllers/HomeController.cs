@@ -115,14 +115,17 @@ namespace PAXSchedule.Controllers
             var timezone = context.GuidebookGuide.FirstOrDefault()?.Timezone;
             if (timezone != null)
             {
+                // If we can find a Windows Zone for this Time Zone, use that so it'll appear nicer in Outlook.
+                timezone = NodaTime.TimeZones.TzdbDateTimeZoneSource.Default.WindowsMapping.MapZones
+                    .FirstOrDefault(z => z.TzdbIds.Contains(timezone))?.WindowsId ?? timezone;
                 calendar.AddTimeZone(timezone);
             }
             calendar.Events.AddRange(events.Select(e => new CalendarEvent
                 {
                     Uid = e.Id.ToString() + "_" + e.GuideId.ToString() + "@paxschedule.com",
                     Summary = e.Name,
-                    Start = new CalDateTime(Convert.ToDateTime(e.StartTime), e.Guide.Timezone),
-                    End = new CalDateTime(Convert.ToDateTime(e.EndTime), e.Guide.Timezone),
+                    Start = new CalDateTime(Convert.ToDateTime(e.StartTime), timezone),
+                    End = new CalDateTime(Convert.ToDateTime(e.EndTime), timezone),
                     Description = e.Description,
                     Location = e.EventLocation.Location.Name
                 }));
