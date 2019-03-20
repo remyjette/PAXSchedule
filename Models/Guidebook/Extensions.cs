@@ -19,6 +19,14 @@ namespace PAXSchedule.Models.Gudebook
         public GuidebookEventLocation EventLocation { get; set; }
 
         public List<GuidebookEventScheduleTrack> ScheduleTracks { get; set; }
+
+        public string NormalizedDescription
+        {
+            get
+            {
+                return Description.Replace("<br>", "\n").Trim();
+            }
+        }
     }
 
     public partial class GuidebookEventLocation

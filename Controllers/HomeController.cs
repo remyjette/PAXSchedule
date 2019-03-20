@@ -126,7 +126,7 @@ namespace PAXSchedule.Controllers
                     Summary = e.Name,
                     Start = new CalDateTime(Convert.ToDateTime(e.StartTime), timezone),
                     End = new CalDateTime(Convert.ToDateTime(e.EndTime), timezone),
-                    Description = e.Description,
+                    Description = e.NormalizedDescription,
                     Location = e.EventLocation.Location.Name
                 }));
 
