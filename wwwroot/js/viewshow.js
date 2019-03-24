@@ -28,7 +28,7 @@ $(function () { // document ready
         hash = hashids.encode(...selectedEvents);
         window.history.replaceState({ hashids: hash }, "" /* title */, viewShowUrl + "/" + hash);
         url = window.location.origin + calendarUrl + "/" + hash;
-        $("#calendarUrl input").val(window.location.origin + calendarUrl + "/" + hash);
+        $("#calendarUrl input").val('http://' + window.location.host + calendarUrl + '/' + hash);
         $('.download-button').attr('href', url);
     }
     onSelectedEventsChanged();
