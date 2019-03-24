@@ -85,11 +85,11 @@ $(function () { // document ready
     $.getJSON(eventsUrl)
         .done(function (events) {
             $('#loadingSpinner').remove();
-            $('#calendarUrl').show();
+            $('#calendarContainer').show();
 
             var locations = _.chain(events).map(e => e.eventLocation.location).uniq(l => l.id).value();
 
-            var tracks = _.chain(events).map(e => _(e.scheduleTracks).pluck('schedule')).flatten().uniq(s => s.id).value();
+            var tracks = _.chain(events).map(e => _(e.scheduleTracks).pluck('schedule')).flatten().uniq(s => s.id).sortBy(t => t.name).value();
             var panelTrack = _(tracks).find(t => t.name == "Panel");
             if (panelTrack) {
                 // Since we have the panel track, remove any tracks for which all events overlap
@@ -99,7 +99,27 @@ $(function () { // document ready
                 tracks.unshift(panelTrack);
             }
 
-            var events = _(events).map(e =>
+            if (tracks) {
+                $('#trackContainer').show();
+                var trackButtonTemplate = $('#trackContainer .track-button');
+                tracks.forEach(track => {
+                    var newTrackButton = trackButtonTemplate.clone();
+                    newTrackButton.show();
+                    newTrackButton.find('span').text(track.name);
+                    if (!panelTrack || track == panelTrack) {
+                        newTrackButton.addClass('active');
+                    }
+                    var color = track.hexValue || "#3a87ad"; // Matches default for FullCalendar, should probably be more clever about this
+                    newTrackButton.data('track', track);
+                    newTrackButton.css('cursor', 'pointer');
+                    newTrackButton.css('border-color', track.hexValue);
+                    newTrackButton.css('color', newTrackButton.hasClass('active') ? 'white' : color);
+                    newTrackButton.css('background-color', newTrackButton.hasClass('active') ? color : 'white');
+                    newTrackButton.appendTo(trackButtonTemplate.parent());
+                });
+            }
+
+            var allEvents = _(events).map(e =>
                 _.extend(e, {
                     'title': e.name,
                     'resourceId': e.locations,
@@ -109,6 +129,24 @@ $(function () { // document ready
                     'textColor': tinycolor(e.scheduleTracks[0].schedule.hexValue).isLight() ? "black" : "white"
                 })
             );
+
+            var selectedTracksEvents = () => {
+                var selectedTrackIds = _.pluck($('.track-button.active').map((i, e) => $(e).data('track')).get(), 'id');
+                return _(allEvents).filter(e => _.chain(e.scheduleTracks).pluck('schedule').pluck('id').intersection(selectedTrackIds).value().length > 0);
+            }
+            $('.track-button').on('click', e => {
+                e.preventDefault();
+                e.stopPropagation();
+                var $button = $(e.currentTarget);
+                $button.toggleClass('active');
+                // TODO combine coloring with the initial render code
+                var color = $button.data('track').hexValue || "#3a87ad"; // Matches default for FullCalendar, should probably be more clever about this
+                $button.css('color', $button.hasClass('active') ? 'white' : color);
+                $button.css('background-color', $button.hasClass('active') ? color : 'white');
+                calendar.refetchEvents();
+            });
+
+            console.log(selectedTracksEvents());
 
             // TODO: consolidate these two
             var minTime = _.chain(events).pluck('startTime').map(dateString =>
@@ -156,7 +194,7 @@ $(function () { // document ready
 
                 resources: locations,
 
-                events: events,
+                eventSources: [(info, successCallback) => successCallback(selectedTracksEvents())],
 
                 eventRender: function (info) {
                     $(info.el).on('contextmenu', e => {

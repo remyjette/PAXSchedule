@@ -12,41 +12,60 @@
     <h1 class="display-4">@ViewData["ShowName"]</h1>
 </div>
 
-<div id="calendarUrl" class="center-block mb-1" style="display: none">
-    <div class="input-group mb-1">
-        <input class="form-control border-right-0" type="text" readonly />
-        <span class="input-group-btn">
-            <button class="copy-button btn btn-outline-secondary rounded-0" type="button" data-toggle="tooltip" title="Copied!">Copy</button>
-        </span>
-    </div>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-auto">
-                <a href="#" class="download-button btn btn-outline-secondary">Download</a>
-            </div>
-            <div class="col-auto">
-                <div class="dropdown">
-                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="subscribeMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Subscribe
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="subscribeMenuButton">
-                        <button class="subscribe-button dropdown-item" data-subscribe-type="google" type="button">Google Calendar</button>
-                        <button class="subscribe-button dropdown-item" data-subscribe-type="outlook" type="button">Outlook.com</button>
-                        <button class="subscribe-button dropdown-item" data-subscribe-type="webcal" type="button">Your device's default calendar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
 <div id="loadingSpinner" class="d-flex justify-content-center">
     <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
         <span class="sr-only">Loading...</span>
     </div>
 </div>
-<div class="pt-2" style="overflow-x:auto">
-    <div id="calendar"></div>
+
+<div id="calendarContainer" style="display: none">
+    <div id="calendarUrl" class="center-block mb-1">
+        <div class="input-group mb-1">
+            <input class="form-control border-right-0" type="text" readonly />
+            <span class="input-group-btn">
+                <button class="copy-button btn btn-outline-secondary rounded-0" type="button" data-toggle="tooltip" title="Copied!">Copy</button>
+            </span>
+        </div>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-auto">
+                    <a href="#" class="download-button btn btn-outline-secondary">Download</a>
+                </div>
+                <div class="col-auto">
+                    <div class="dropdown">
+                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="subscribeMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Subscribe
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="subscribeMenuButton">
+                            <button class="subscribe-button dropdown-item" data-subscribe-type="google" type="button">Google Calendar</button>
+                            <button class="subscribe-button dropdown-item" data-subscribe-type="outlook" type="button">Outlook.com</button>
+                            <button class="subscribe-button dropdown-item" data-subscribe-type="webcal" type="button">Your device's default calendar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="trackContainer" class="container" style="display: none">
+        <div class="row pt-3 justify-content-center">
+            <div class="col-2dot4 align-self-center">View Schedule Tracks:</div>
+            <div class="col">
+                <div class="row">
+                    <div class="btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-sm btn-outline-secondary mr-1 mb-1 track-button" style="display:none">
+                            <input type="checkbox" checked autocomplete="off">
+                            <span></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="pt-2" style="overflow-x:auto">
+        <div id="calendar"></div>
+    </div>
 </div>
 
 <div id="eventSummaryModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
