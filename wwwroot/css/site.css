@@ -70,7 +70,8 @@ body {
 }
 
 #calendarUrl {
-    width: 800px;
+    width: 100%;
+    max-width: 800px;
 }
 #calendarUrl input {
     background-color: #fff;

@@ -12,12 +12,31 @@
     <h1 class="display-4">@ViewData["ShowName"]</h1>
 </div>
 
-<div id="calendarUrl" class="center-block" style="display: none">
-    <div class="input-group">
+<div id="calendarUrl" class="center-block mb-1" style="display: none">
+    <div class="input-group mb-1">
         <input class="form-control border-right-0" type="text" readonly />
         <span class="input-group-btn">
-            <button class="btn btn-outline-secondary rounded-left-0" type="button" data-toggle="tooltip" title="Copied!">Copy</button>
+            <button class="copy-button btn btn-outline-secondary rounded-0" type="button" data-toggle="tooltip" title="Copied!">Copy</button>
         </span>
+    </div>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-auto">
+                <a href="#" class="download-button btn btn-outline-secondary">Download</a>
+            </div>
+            <div class="col-auto">
+                <div class="dropdown">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="subscribeMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Subscribe
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="subscribeMenuButton">
+                        <button class="subscribe-button dropdown-item" data-subscribe-type="google" type="button">Google Calendar</button>
+                        <button class="subscribe-button dropdown-item" data-subscribe-type="outlook" type="button">Outlook.com</button>
+                        <button class="subscribe-button dropdown-item" data-subscribe-type="webcal" type="button">Your device's default calendar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 

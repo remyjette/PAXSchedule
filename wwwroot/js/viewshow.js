@@ -7,7 +7,7 @@ $(function () { // document ready
     $("#calendarUrl input").on('click', function () {
         $(this).select();
     });
-    $("#calendarUrl button")
+    $("#calendarUrl .copy-button")
         .on('click', function () {
             $("#calendarUrl input").select();
             document.execCommand('copy');
@@ -23,10 +23,13 @@ $(function () { // document ready
 
     // This function should be called every time selectedEvents is modified.
     // TODO: Use Proxy to do this automatically
+    var hash = ''; // Global so it can be accessed by download/subscribe buttons
     function onSelectedEventsChanged() {
-        var hash = hashids.encode(...selectedEvents);
+        hash = hashids.encode(...selectedEvents);
         window.history.replaceState({ hashids: hash }, "" /* title */, viewShowUrl + "/" + hash);
+        url = window.location.origin + calendarUrl + "/" + hash;
         $("#calendarUrl input").val(window.location.origin + calendarUrl + "/" + hash);
+        $('.download-button').attr('href', url);
     }
     onSelectedEventsChanged();
 
@@ -57,6 +60,27 @@ $(function () { // document ready
             $titleDiv.css('font-weight', 'bold');
         }
     }
+
+    $('.subscribe-button').on('click', e => {
+        var subscribeType = $(e.currentTarget).data('subscribe-type');
+        var urlWithoutProtocol = window.location.host + calendarUrl + '/' + hash;
+        var url = '';
+        switch (subscribeType) {
+            case 'google':
+                url = 'https://calendar.google.com/calendar/r?cid=http://' + urlWithoutProtocol;
+                break;
+            case 'outlook':
+                url = 'https://outlook.live.com/owa/?path=/calendar/action/compose&rru=addsubscription&url=http://' + urlWithoutProtocol;
+                break;
+            case 'webcal':
+                url = 'webcal://' + urlWithoutProtocol;
+                break;
+            default:
+                console.log('Warning: Invalid subscribe type.')
+        }
+        var win = window.open(url, '_blank');
+        win.focus();
+    });
 
     $.getJSON(eventsUrl)
         .done(function (events) {
