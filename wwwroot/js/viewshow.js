@@ -84,7 +84,8 @@ $(function () { // document ready
 
     $.getJSON(eventsUrl)
         .done(function (events) {
-            $("#calendarUrl").show();
+            $('#loadingSpinner').remove();
+            $('#calendarUrl').show();
 
             var locations = _.chain(events).map(e => e.eventLocation.location).uniq(l => l.id).value();
 
@@ -124,7 +125,6 @@ $(function () { // document ready
                 .toString();
 
             var calendarElement = document.getElementById('calendar');
-            $(calendarElement).empty(); // remove loading icon
             var calendar = new FullCalendar.Calendar(calendarElement, {
                 schedulerLicenseKey: "CC-Attribution-NonCommercial-NoDerivatives",
                 defaultView: 'agendaDay',
