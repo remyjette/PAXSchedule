@@ -146,8 +146,6 @@ $(function () { // document ready
                 calendar.refetchEvents();
             });
 
-            console.log(selectedTracksEvents());
-
             // TODO: consolidate these two
             var minTime = _.chain(events).pluck('startTime').map(dateString =>
                 JSJoda.LocalDateTime.ofInstant(JSJoda.Instant.ofEpochMilli(new Date(dateString).getTime())).toLocalTime()
@@ -208,6 +206,9 @@ $(function () { // document ready
                         $eventSummaryModal.find("#eventDescription").html(info.event.extendedProps.description);
                         $eventSummaryModal.modal('show');
                     });
+
+                    // TODO this gets fired for every event we render. Can we only do it once per re-render?
+                    $(calendarElement).css('min-width', 50 + (80 * $(calendarElement).find('th').length) + 'px');
 
                     eventRender(info);
                 },
