@@ -203,7 +203,7 @@ $(function () { // document ready
                         $eventSummaryModal.find("#eventTitle").text(info.event.title);
                         $eventSummaryModal.find("#eventTime").text(info.event.start.toLocaleTimeString('en-us', { hour: '2-digit', minute: '2-digit' }) + " - " + info.event.end.toLocaleTimeString('en-us', { hour: '2-digit', minute: '2-digit' }));
                         $eventSummaryModal.find("#eventLocation").text(info.event.extendedProps.eventLocation.location.name);
-                        $eventSummaryModal.find("#eventDescription").html(info.event.extendedProps.description);
+                        $eventSummaryModal.find("#eventDescription").html(info.event.extendedProps.plaintextDescription.replace(/\n/g, "<br />"));
                         $eventSummaryModal.modal('show');
                     });
 

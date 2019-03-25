@@ -20,11 +20,14 @@ namespace PAXSchedule.Models.Gudebook
 
         public List<GuidebookEventScheduleTrack> ScheduleTracks { get; set; }
 
-        public string NormalizedDescription
+        public string PlaintextDescription
         {
             get
             {
-                return Description.Replace("<br>", "\n").Trim();
+                return Description
+                    .Replace("<p>", "")
+                    .Replace("</p>", "")
+                    .Replace("<br>", "\n").Trim();
             }
         }
     }
