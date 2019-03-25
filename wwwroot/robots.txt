@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /css/
+Disallow: /js/
+Disallow: /lib/
+Host: paxschedule.com
