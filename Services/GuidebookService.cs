@@ -55,7 +55,7 @@ namespace PAXSchedule.Services
 
         public Show GetShow(string showName)
         {
-            return _shows[showName];
+            return _shows.TryGetValue(showName, out var show) ? show : null;
         }
     }
 }

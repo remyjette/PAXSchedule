@@ -36,6 +36,10 @@ namespace PAXSchedule.Controllers
         public IActionResult ViewShow(string showName)
         {
             var show = _guidebookService.GetShow(showName);
+            if (show == null)
+            {
+                return NotFound();
+            }
 
             ViewData["ShowName"] = show.FullName;
             ViewData["CalendarUrl"] = Url.Action(nameof(Calendar), new { showName });
@@ -72,7 +76,13 @@ namespace PAXSchedule.Controllers
                 syncIOFeature.AllowSynchronousIO = true;
             }
 
-            using var context = await _guidebookService.GetShow(showName).GetDbContext();
+            var show = _guidebookService.GetShow(showName);
+            if (show == null)
+            {
+                return NotFound();
+            }
+
+            using var context = await show.GetDbContext();
 
             if (context == null)
             {
@@ -101,6 +111,11 @@ namespace PAXSchedule.Controllers
             HttpContext.Items.Add("filename", showName + ".ics");
 
             var show = _guidebookService.GetShow(showName);
+            if (show == null)
+            {
+                return NotFound();
+            }
+
             using var context = await show.GetDbContext();
 
             var events = GetEvents(context, eventHashids);
