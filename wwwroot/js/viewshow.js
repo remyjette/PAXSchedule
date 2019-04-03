@@ -166,8 +166,8 @@ $(function () { // document ready
                 defaultView: 'agendaDay',
                 height: 'auto',
                 validRange: {
-                    start: '2019-03-28',
-                    end: '2019-04-01'
+                    start: _.chain(events).pluck('startTime').map(dateString => new Date(dateString)).min().value(),
+                    end: _.chain(events).pluck('endTime').map(dateString => new Date(dateString)).max().value()
                 },
                 minTime: minTime,
                 maxTime: maxTime,
