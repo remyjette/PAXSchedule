@@ -11,14 +11,6 @@
             "destination": "wwwroot/lib/bootstrap/"
         },
         {
-            "library": "fullcalendar@4.0.0-alpha.4",
-            "destination": "wwwroot/lib/fullcalendar/"
-        },
-        {
-            "library": "fullcalendar-scheduler@4.0.0-alpha.4",
-            "destination": "wwwroot/lib/fullcalendar-scheduler/"
-        },
-        {
             "library": "underscore.js@1.9.1",
             "destination": "wwwroot/lib/underscore/"
         },
@@ -29,6 +21,36 @@
         {
             "library": "tinycolor@1.4.1",
             "destination": "wwwroot/lib/tinycolor/"
+        },
+        {
+            "provider": "unpkg",
+            "library": "@fullcalendar/core@4.3.1",
+            "destination": "wwwroot/lib/fullcalendar/core/"
+        },
+        {
+            "provider": "unpkg",
+            "library": "@fullcalendar/resource-timegrid@4.3.0",
+            "destination": "wwwroot/lib/fullcalendar/resource-timegrid/"
+        },
+        {
+            "provider": "unpkg",
+            "library": "@fullcalendar/resource-common@4.3.1",
+            "destination": "wwwroot/lib/fullcalendar/resource-common/"
+        },
+        {
+            "provider": "unpkg",
+            "library": "@fullcalendar/resource-daygrid@4.3.0",
+            "destination": "wwwroot/lib/fullcalendar/resource-daygrid/"
+        },
+        {
+            "provider": "unpkg",
+            "library": "@fullcalendar/daygrid@4.3.0",
+            "destination": "wwwroot/lib/fullcalendar/daygrid/"
+        },
+        {
+            "provider": "unpkg",
+            "library": "@fullcalendar/timegrid@4.3.0",
+            "destination": "wwwroot/lib/fullcalendar/timegrid/"
         }
     ]
 }

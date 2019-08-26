@@ -27,9 +27,8 @@ $(function () { // document ready
     function onSelectedEventsChanged() {
         hash = hashids.encode(...selectedEvents);
         window.history.replaceState({ hashids: hash }, "" /* title */, viewShowUrl + "/" + hash);
-        url = window.location.origin + calendarUrl + "/" + hash;
-        $("#calendarUrl input").val('http://' + window.location.host + calendarUrl + '/' + hash);
-        $('.download-button').attr('href', url);
+        $("#calendarUrl input").val('http://' + window.location.host + calendarUrl + "/" + hash);
+        $('.download-button').attr('href', window.location.origin + calendarUrl + "/" + hash);
     }
     onSelectedEventsChanged();
 
@@ -162,8 +161,9 @@ $(function () { // document ready
 
             var calendarElement = document.getElementById('calendar');
             var calendar = new FullCalendar.Calendar(calendarElement, {
+                plugins: ['resourceTimeGrid' ],
                 schedulerLicenseKey: "CC-Attribution-NonCommercial-NoDerivatives",
-                defaultView: 'agendaDay',
+                defaultView: 'resourceTimeGridDay',
                 height: 'auto',
                 validRange: {
                     start: _.chain(events).pluck('startTime').map(dateString => new Date(dateString)).min().value(),
@@ -197,7 +197,7 @@ $(function () { // document ready
                 eventRender: function (info) {
                     $(info.el).on('contextmenu', e => {
                         e.preventDefault();
-                        $eventSummaryModal = $("#eventSummaryModal");
+                        var $eventSummaryModal = $("#eventSummaryModal");
                         $eventSummaryModal.find("#eventTitle").text(info.event.title);
                         $eventSummaryModal.find("#eventTime").text(info.event.start.toLocaleTimeString('en-us', { hour: '2-digit', minute: '2-digit' }) + " - " + info.event.end.toLocaleTimeString('en-us', { hour: '2-digit', minute: '2-digit' }));
                         $eventSummaryModal.find("#eventLocation").text(info.event.extendedProps.eventLocation.location.name);

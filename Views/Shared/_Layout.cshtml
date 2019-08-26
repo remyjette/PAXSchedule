@@ -7,8 +7,9 @@
 
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.css" />
-        <link rel="stylesheet" href="~/lib/fullcalendar/fullcalendar.css" />
-        <link rel="stylesheet" href="~/lib/fullcalendar-scheduler/scheduler.css" />
+        <link href='~/lib/fullcalendar/core/main.css' rel='stylesheet' />
+        <link href='~/lib/fullcalendar/daygrid/main.css' rel='stylesheet' />
+        <link href='~/lib/fullcalendar/timegrid/main.css' rel='stylesheet' />
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -16,8 +17,9 @@
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"
               crossorigin="anonymous"
               integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" />
-        <link rel="stylesheet" href="~/lib/fullcalendar/fullcalendar.min.css" />
-        <link rel="stylesheet" href="~/lib/fullcalendar-scheduler/scheduler.min.css" />
+        <link href='~/lib/fullcalendar/core/main.min.css' rel='stylesheet' />
+        <link href='~/lib/fullcalendar/daygrid/main.min.css' rel='stylesheet' />
+        <link href='~/lib/fullcalendar/timegrid/main.min.css' rel='stylesheet' />
     </environment>
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
@@ -58,8 +60,14 @@
     <environment include="Development">
         <script src="~/lib/jquery/jquery.js"></script>
         <script src="~/lib/bootstrap/js/bootstrap.bundle.js"></script>
-        <script src="~/lib/fullcalendar/fullcalendar.js"></script>
-        <script src="~/lib/fullcalendar-scheduler/scheduler.js"></script>
+
+        <script src='~/lib/fullcalendar/core/main.js'></script>
+        <script src='~/lib/fullcalendar/daygrid/main.js'></script>
+        <script src='~/lib/fullcalendar/timegrid/main.js'></script>
+        <script src='~/lib/fullcalendar/resource-common/main.js'></script>
+        <script src='~/lib/fullcalendar/resource-daygrid/main.js'></script>
+        <script src='~/lib/fullcalendar/resource-timegrid/main.js'></script>
+
         <script src="~/lib/underscore/underscore.js"></script>
         <script src="~/lib/js-joda/js-joda.js"></script>
         <script src="~/lib/hashids/hashids.js"></script>
@@ -76,15 +84,21 @@
                 asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
                 crossorigin="anonymous"
                 integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o"></script>
-        <script src="~/lib/fullcalendar/fullcalendar.min.js"></script>
-        <script src="~/lib/fullcalendar-scheduler/scheduler.min.js"></script>
+
+        <script src='~/lib/fullcalendar/core/main.min.js'></script>
+        <script src='~/lib/fullcalendar/daygrid/main.min.js'></script>
+        <script src='~/lib/fullcalendar/timegrid/main.min.js'></script>
+        <script src='~/lib/fullcalendar/resource-common/main.min.js'></script>
+        <script src='~/lib/fullcalendar/resource-daygrid/main.min.js'></script>
+        <script src='~/lib/fullcalendar/resource-timegrid/main.min.js'></script>
+
         <script src="~/lib/underscore/underscore-min.js"></script>
         <script src="~/lib/js-joda/js-joda.min.js"></script>
         <script src="~/lib/hashids/hashids.min.js"></script>
         <script src="~/lib/tinycolor/tinycolor.min.js"></script>
     </environment>
 
-    <script src="~/js/viewshow.js" asp-append-version="true"></script>
+    <script src="~/js/main.js" asp-append-version="true"></script>
 
     @RenderSection("Scripts", required: false)
 </body>
