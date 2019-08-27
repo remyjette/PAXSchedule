@@ -40,6 +40,9 @@ $(function () { // document ready
         var $bgDiv = $el.find('.fc-bg');
         var $titleDiv = $el.find('.fc-title');
 
+        // Prevent selecting the event title text to improve hold-tap for description on mobile.
+        $el.addClass('noselect');
+
         var index = selectedEvents.indexOf(parseInt(info.event.id, 10));
 
         if (index == -1) {
