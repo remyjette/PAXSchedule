@@ -15,7 +15,7 @@
             "destination": "wwwroot/lib/underscore/"
         },
         {
-            "library": "js-joda@1.9.3",
+            "library": "js-joda@1.11.0",
             "destination": "wwwroot/lib/js-joda/"
         },
         {

@@ -150,13 +150,13 @@ $(function () { // document ready
 
             // TODO: consolidate these two
             var minTime = _.chain(events).pluck('startTime').map(dateString =>
-                JSJoda.LocalDateTime.ofInstant(JSJoda.Instant.ofEpochMilli(new Date(dateString).getTime())).toLocalTime()
+                JSJoda.LocalDateTime.parse(dateString.replace(' ', 'T')).toLocalTime()
             )
                 .min(x => x.toSecondOfDay())
                 .value()
                 .toString();
             var maxTime = _.chain(events).pluck('endTime').map(dateString =>
-                JSJoda.LocalDateTime.ofInstant(JSJoda.Instant.ofEpochMilli(new Date(dateString).getTime())).toLocalTime()
+                JSJoda.LocalDateTime.parse(dateString.replace(' ', 'T')).toLocalTime()
             )
                 .max(x => x.toSecondOfDay())
                 .value()
