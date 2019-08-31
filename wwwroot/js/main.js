@@ -92,7 +92,7 @@ $(function () { // document ready
             var locations = _.chain(events).map(e => e.eventLocation.location).uniq(l => l.id).value();
 
             var tracks = _.chain(events).map(e => _(e.scheduleTracks).pluck('schedule')).flatten().uniq(s => s.id).sortBy(t => t.name).value();
-            var panelTrack = _(tracks).find(t => t.name == "Panel");
+            var panelTrack = _(tracks).find(t => t.name == "Panel"); // TODO (#11) don't hardcode 'Panel'
             if (panelTrack) {
                 // Since we have the panel track, remove any tracks for which all events overlap
                 var getEventsForTrack = track => _(events).filter(e => _.chain(e.scheduleTracks).pluck('schedule').pluck('id').contains(track.id).value());
@@ -127,7 +127,7 @@ $(function () { // document ready
                     'resourceId': e.locations,
                     'start': e.startTime,
                     'end': e.endTime,
-                    'color': e.scheduleTracks[0].schedule.hexValue,
+                    'color': e.scheduleTracks.length == 1 ? e.scheduleTracks[0].schedule.hexValue : _.find(e.scheduleTracks, st => st.schedule.name != "Panel").schedule.hexValue, // TODO (#11) don't hardcode 'Panel'
                     'textColor': tinycolor(e.scheduleTracks[0].schedule.hexValue).isLight() ? "black" : "white"
                 })
             );
