@@ -9,9 +9,18 @@ $(function () { // document ready
     });
     $("#calendarUrl .copy-button")
         .on('click', function () {
-            $("#calendarUrl input").select();
+            // Create an element we can copy text to to use document.execCommand('copy')
+            // This can be replaced when the Clipboard API has better support.
+            // The element is created right next to the button to avoid moving the window,
+            // but this probably needs more work.
+            var input = $('<input>').appendTo($(this).parent());
+            input.val($(this).data('url'));
+            input.focus();
+            input.select();
             document.execCommand('copy');
+            input.remove()
             setTimeout(() => $(this).tooltip('hide'), 1000);
+            return false; // Don't navigate to '#'
         })
         .tooltip({ trigger: "click" });
 
@@ -27,7 +36,7 @@ $(function () { // document ready
     function onSelectedEventsChanged() {
         hash = hashids.encode(...selectedEvents);
         window.history.replaceState({ hashids: hash }, "" /* title */, viewShowUrl + "/" + hash);
-        $("#calendarUrl input").val('http://' + window.location.host + calendarUrl + "/" + hash);
+        $("#calendarUrl .copy-button").data('url', window.location.origin + calendarUrl + "/" + hash);
         $('.download-button').attr('href', window.location.origin + calendarUrl + "/" + hash);
     }
     onSelectedEventsChanged();
