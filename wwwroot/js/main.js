@@ -121,16 +121,17 @@ $(function () { // document ready
                 });
             }
 
-            var allEvents = _(events).map(e =>
-                _.extend(e, {
+            var allEvents = _(events).map(e => {
+                var color = e.scheduleTracks.length == 1 ? e.scheduleTracks[0].schedule.hexValue : _.find(e.scheduleTracks, st => st.schedule.name != "Panel").schedule.hexValue; // TODO (#11) don't hardcode 'Panel'
+                return _.extend(e, {
                     'title': e.name,
                     'resourceId': e.locations,
                     'start': e.startTime,
                     'end': e.endTime,
-                    'color': e.scheduleTracks.length == 1 ? e.scheduleTracks[0].schedule.hexValue : _.find(e.scheduleTracks, st => st.schedule.name != "Panel").schedule.hexValue, // TODO (#11) don't hardcode 'Panel'
-                    'textColor': tinycolor(e.scheduleTracks[0].schedule.hexValue).isLight() ? "black" : "white"
+                    'color': color,
+                    'textColor': tinycolor(color).isLight() ? "black" : "white"
                 })
-            );
+            });
 
             var selectedTracksEvents = () => {
                 var selectedTrackIds = _.pluck($('.track-button.active').map((i, e) => $(e).data('track')).get(), 'id');
