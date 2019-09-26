@@ -13,8 +13,7 @@ stages:
     - task: UseDotNet@2
       displayName: 'Use .NET Core 3.0'
       inputs:
-        version: '3.0.100-preview8-013656'
-        includePreviewVersions: true
+        version: 3.0.x
     - task: DotNetCoreCLI@2
       displayName: Restore
       inputs:
