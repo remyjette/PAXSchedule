@@ -28,7 +28,7 @@ namespace PAXSchedule.Controllers
 
         public IActionResult Index()
         {
-            return RedirectToAction(nameof(ViewShow), new { showName = "paxwest2019" });
+            return RedirectToAction(nameof(ViewShow), new { showName = "paxunplugged2019" });
         }
 
         [HttpGet("{showName}")]
