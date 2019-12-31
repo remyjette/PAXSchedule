@@ -30,7 +30,8 @@ namespace PAXSchedule.Services
                 { "paxeast2019", new Show("paxeast2019", "PAX East 2019", this) },
                 { "sakuracon2019", new Show("sakuracon2019", "Sakura-Con 2019", this) },
                 { "paxwest2019", new Show("paxwest2019", "PAX West 2019", this) },
-                { "paxunplugged2019", new Show("paxunplugged20019", "PAX Unplugged 2019", this) }
+                { "paxunplugged2019", new Show("paxunplugged20019", "PAX Unplugged 2019", this) },
+                { "magfest2020", new Show("magfest2020", "Super MAGFest 2020", this) }
             };
         }
 
