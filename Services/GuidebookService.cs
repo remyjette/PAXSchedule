@@ -39,10 +39,20 @@ namespace PAXSchedule.Services
         {
             using var client = _clientFactory.CreateClient();
 
-            var searchResponse = await client.GetStringAsync("https://gears.guidebook.com/service/v2/search/?q=" + WebUtility.UrlEncode(showName));
+            using var requestMessage = new HttpRequestMessage(HttpMethod.Get, "https://guidebook.com/og/service/v2/search/?q=" + WebUtility.UrlEncode(showName));
+            requestMessage.Headers.Add("x-gb-appid", "13");
+            var response = await client.SendAsync(requestMessage);
+            response.EnsureSuccessStatusCode();
+            var searchResponse = await response.Content.ReadAsStringAsync();
+
             var j = JObject.Parse(searchResponse);
 
             var showIdentifier = j["data"].FirstOrDefault(x => x.Value<string>("name") == showName)?.Value<string>("productIdentifier");
+
+            if (showIdentifier == null)
+            {
+                throw new Exception($"Couldn't find show with name {showName}");
+            }
 
             using var guidebookDatabaseStream = await client.GetStreamAsync($"https://gears.guidebook.com/service/v2/guides/{showIdentifier}/bundle/");
             using var guidebookArchive = new ZipArchive(guidebookDatabaseStream);
