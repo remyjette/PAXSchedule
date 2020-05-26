@@ -28,9 +28,14 @@ $(function () { // document ready
 
     var hashids = new Hashids();
 
-    var initialUrl = location.pathname;
-    var initialHash = initialUrl.replace(viewShowUrl + "/", "");
-    var selectedEvents = hashids.decode(initialHash);
+    var selectedEvents;
+    if (location.pathname !== viewShowUrl) {
+        var initialUrl = location.pathname;
+        var initialHash = initialUrl.replace(viewShowUrl + "/", "");
+        selectedEvents = hashids.decode(initialHash);
+    } else {
+        selectedEvents = [];
+    }
 
     // This function should be called every time selectedEvents is modified.
     // TODO: Use Proxy to do this automatically
