@@ -1,7 +1,9 @@
-// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
-
-// Write your JavaScript code.
+import { Calendar } from 'https://unpkg.com/@fullcalendar/core@4.3.1?module';
+import resourceTimeGrid from 'https://unpkg.com/@fullcalendar/resource-timegrid@4.3.0?module';
+import { LocalDateTime } from 'https://unpkg.com/@js-joda/core@2.0.0?module';
+import Hashids from 'https://unpkg.com/hashids@2.2.1?module';
+import _ from 'https://unpkg.com/underscore@1.10.2?module';
+import 'https://unpkg.com/tinycolor2@1.4.1/tinycolor.js'; // This isn't an ES module
 
 $(function () { // document ready
     $("#calendarUrl input").on('click', function () {
@@ -160,21 +162,21 @@ $(function () { // document ready
 
             // TODO: consolidate these two
             var minTime = _.chain(events).pluck('startTime').map(dateString =>
-                JSJoda.LocalDateTime.parse(dateString.replace(' ', 'T')).toLocalTime()
+                LocalDateTime.parse(dateString.replace(' ', 'T')).toLocalTime()
             )
                 .min(x => x.toSecondOfDay())
                 .value()
                 .toString();
             var maxTime = _.chain(events).pluck('endTime').map(dateString =>
-                JSJoda.LocalDateTime.parse(dateString.replace(' ', 'T')).toLocalTime()
+                LocalDateTime.parse(dateString.replace(' ', 'T')).toLocalTime()
             )
                 .max(x => x.toSecondOfDay())
                 .value()
                 .toString();
 
             var calendarElement = document.getElementById('calendar');
-            var calendar = new FullCalendar.Calendar(calendarElement, {
-                plugins: ['resourceTimeGrid' ],
+            var calendar = new Calendar(calendarElement, {
+                plugins: [ resourceTimeGrid ],
                 schedulerLicenseKey: "CC-Attribution-NonCommercial-NoDerivatives",
                 defaultView: 'resourceTimeGridDay',
                 height: 'auto',
