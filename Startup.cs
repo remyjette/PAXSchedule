@@ -71,8 +71,6 @@ namespace PAXSchedule
             });
 
             app.UseCookiePolicy();
-
-            app.UseAuthorization();
         }
     }
 }
