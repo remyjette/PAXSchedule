@@ -1,5 +1,5 @@
-import { Calendar } from 'https://unpkg.com/@fullcalendar/core@4.3.1?module';
-import resourceTimeGrid from 'https://unpkg.com/@fullcalendar/resource-timegrid@4.3.0?module';
+import { Calendar } from 'https://unpkg.com/@fullcalendar/core@4.4.2?module';
+import resourceTimeGrid from 'https://unpkg.com/@fullcalendar/resource-timegrid@4.4.2?module';
 import { LocalDateTime } from 'https://unpkg.com/@js-joda/core@2.0.0?module';
 import Hashids from 'https://unpkg.com/hashids@2.2.1?module';
 import _ from 'https://unpkg.com/underscore@1.10.2?module';
