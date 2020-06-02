@@ -54,14 +54,24 @@ namespace PAXSchedule
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                // app.UseHsts();
             }
+
+            // Redirect www.paxschedule.com to https://paxschedule.com
+            app.Use(next => context =>
+            {
+                if (context.Request.Host.Host == "www.paxschedule.com")
+                {
+                    context.Response.Redirect("https://paxschedule.com" + context.Request.Path, permanent: true);
+                    return context.Response.StartAsync();
+                }
+                return next(context);
+            });
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
