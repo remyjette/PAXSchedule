@@ -71,13 +71,6 @@ namespace PAXSchedule.Controllers
         [Produces("application/json")]
         public async Task<IActionResult> Events(string showName, string eventHashids)
         {
-            // Workaround for https://github.com/aspnet/AspNetCore/issues/7644
-            var syncIOFeature = HttpContext.Features.Get<IHttpBodyControlFeature>();
-            if (syncIOFeature != null)
-            {
-                syncIOFeature.AllowSynchronousIO = true;
-            }
-
             var show = _guidebookService.GetShow(showName);
             if (show == null)
             {
