@@ -17,7 +17,7 @@ namespace PAXSchedule.Models
 
         private bool _configured = false;
         private DateTime _lastUpdated;
-        public bool Configured { get { return _configured && _lastUpdated < DateTime.Now.Add(eventExpiration); } }
+        public bool Configured => _configured && _lastUpdated < DateTime.Now.Add(eventExpiration);
 
         public Show(string name, string fullName, GuidebookService guidebookService)
         {
