@@ -11,16 +11,7 @@ $(function () { // document ready
     });
     $("#calendarUrl .copy-button")
         .on('click', function () {
-            // Create an element we can copy text to to use document.execCommand('copy')
-            // This can be replaced when the Clipboard API has better support.
-            // The element is created right next to the button to avoid moving the window,
-            // but this probably needs more work.
-            var input = $('<input>').appendTo($(this).parent());
-            input.val($(this).data('url'));
-            input.focus();
-            input.select();
-            document.execCommand('copy');
-            input.remove()
+            navigator.clipboard.writeText($(this).data('url'));
             setTimeout(() => $(this).tooltip('hide'), 1000);
             return false; // Don't navigate to '#'
         })
