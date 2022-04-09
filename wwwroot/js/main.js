@@ -1,8 +1,8 @@
 import { Calendar } from 'https://unpkg.com/@fullcalendar/core@4.4.2?module';
 import resourceTimeGrid from 'https://unpkg.com/@fullcalendar/resource-timegrid@4.4.2?module';
-import { LocalDateTime } from 'https://unpkg.com/@js-joda/core@2.0.0?module';
-import Hashids from 'https://unpkg.com/hashids@2.2.1?module';
-import _ from 'https://unpkg.com/underscore@1.10.2?module';
+import { LocalDateTime } from 'https://unpkg.com/@js-joda/core@5.2.0?module';
+import Hashids from 'https://unpkg.com/hashids@2.2.10?module';
+import _ from 'https://unpkg.com/underscore@1.13.2?module';
 import 'https://unpkg.com/tinycolor2@1.4.1/tinycolor.js'; // This isn't an ES module
 
 $(function () { // document ready
