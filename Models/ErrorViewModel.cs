@@ -1,5 +1,3 @@
-using System;
-
 namespace PAXSchedule.Models
 {
     public class ErrorViewModel

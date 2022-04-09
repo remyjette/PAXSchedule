@@ -1,19 +1,13 @@
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
 using Ical.Net;
 using Ical.Net.CalendarComponents;
 using Ical.Net.DataTypes;
-using Ical.Net.Serialization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using PAXSchedule.Models.Gudebook;
 using PAXSchedule.Models;
+using PAXSchedule.Models.Gudebook;
 using PAXSchedule.Services;
-using Microsoft.AspNetCore.Http.Features;
 
 namespace PAXSchedule.Controllers
 {
@@ -131,14 +125,14 @@ namespace PAXSchedule.Controllers
                 calendar.AddTimeZone(timezone);
             }
             calendar.Events.AddRange(events.Select(e => new CalendarEvent
-                {
-                    Uid = e.Id.ToString() + "_" + e.GuideId.ToString() + "@paxschedule.com",
-                    Summary = e.Name,
-                    Start = new CalDateTime(Convert.ToDateTime(e.StartTime), timezone),
-                    End = new CalDateTime(Convert.ToDateTime(e.EndTime), timezone),
-                    Description = e.PlaintextDescription,
-                    Location = e.EventLocation.Location.Name
-                }));
+            {
+                Uid = e.Id.ToString() + "_" + e.GuideId.ToString() + "@paxschedule.com",
+                Summary = e.Name,
+                Start = new CalDateTime(Convert.ToDateTime(e.StartTime), timezone),
+                End = new CalDateTime(Convert.ToDateTime(e.EndTime), timezone),
+                Description = e.PlaintextDescription,
+                Location = e.EventLocation.Location.Name
+            }));
 
             return Ok(calendar);
         }

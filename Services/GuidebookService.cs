@@ -1,15 +1,9 @@
-using Microsoft.EntityFrameworkCore;
-using PAXSchedule.Models.Gudebook;
-using PAXSchedule.Models;
-using System;
-using System.Collections.Generic;
-using System.IO;
 using System.IO.Compression;
-using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
 using System.Text.Json.Nodes;
+using Microsoft.EntityFrameworkCore;
+using PAXSchedule.Models;
+using PAXSchedule.Models.Gudebook;
 
 namespace PAXSchedule.Services
 {
