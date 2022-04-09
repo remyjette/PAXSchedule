@@ -3,10 +3,10 @@ using System.Collections.Generic;
 
 namespace PAXSchedule.Models.Gudebook
 {
-    public partial class GuidebookLocationMapInfo
+    public partial class GuidebookOption
     {
         public long Id { get; set; }
-        public long? LocationId { get; set; }
-        public long? MapId { get; set; }
+        public string? Key { get; set; }
+        public string? Value { get; set; }
     }
 }

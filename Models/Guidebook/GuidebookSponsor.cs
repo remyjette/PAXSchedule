@@ -1,28 +1,24 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PAXSchedule.Models.Gudebook
 {
-    [Table("guidebook_sponsor")]
     public partial class GuidebookSponsor
     {
-        [Column("id")]
         public long Id { get; set; }
-        [Column("guide_id")]
         public long? GuideId { get; set; }
-        [Column("import_id", TypeName = "varchar(255)")]
-        public string ImportId { get; set; }
-        [Column("image", TypeName = "varchar(100)")]
-        public string Image { get; set; }
-        [Column("url", TypeName = "varchar(200)")]
-        public string Url { get; set; }
-        [Column("weight")]
+        public string? ImportId { get; set; }
+        public string? Image { get; set; }
+        public string? Url { get; set; }
         public long? Weight { get; set; }
-        [Column("deleted", TypeName = "bool")]
-        public string Deleted { get; set; }
-        [Column("last_updated", TypeName = "datetime")]
-        public string LastUpdated { get; set; }
+        public byte[]? Deleted { get; set; }
+        public byte[]? LastUpdated { get; set; }
+        public string? BannerImageUrl { get; set; }
+        public string? BannerImageLargeUrl { get; set; }
+        public string? Name { get; set; }
+        public string? BannerUrl { get; set; }
+        public string? Description { get; set; }
+        public byte[]? Enabled { get; set; }
+        public byte[]? WebsiteOnly { get; set; }
     }
 }

@@ -63,7 +63,7 @@ namespace PAXSchedule.Controllers
 
             // Also filter out any events without a schedule or location, since they won't be visible
             // on the calendar anyway and then the front-end code doesn't need to nullcheck
-            return context.GuidebookEvent.Where(e => e.EventLocation != null && e.ScheduleTracks.Count != 0).Where(eventPredicate);
+            return context.GuidebookEvents.Where(e => e.EventLocation != null && e.ScheduleTracks.Count != 0).Where(eventPredicate);
         }
 
         [HttpGet("{showName}/[action]")]
@@ -122,7 +122,7 @@ namespace PAXSchedule.Controllers
 
             var calendar = new Calendar();
             calendar.Properties.Add(new CalendarProperty("X-WR-CALNAME", show.FullName));
-            var timezone = context.GuidebookGuide.FirstOrDefault()?.Timezone;
+            var timezone = context.GuidebookGuides.FirstOrDefault()?.Timezone;
             if (timezone != null)
             {
                 // If we can find a Windows Zone for this Time Zone, use that so it'll appear nicer in Outlook.
