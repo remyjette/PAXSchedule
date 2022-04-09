@@ -1,17 +1,15 @@
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json.Linq;
 using PAXSchedule.Models.Gudebook;
 using PAXSchedule.Models;
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Threading;
 using System.Threading.Tasks;
+using System.Text.Json.Nodes;
 
 namespace PAXSchedule.Services
 {
@@ -41,9 +39,9 @@ namespace PAXSchedule.Services
             response.EnsureSuccessStatusCode();
             var searchResponse = await response.Content.ReadAsStringAsync();
 
-            var j = JObject.Parse(searchResponse);
+            var j = JsonNode.Parse(searchResponse);
 
-            var showIdentifier = j["data"].FirstOrDefault(x => x.Value<string>("name") == showName)?.Value<string>("productIdentifier");
+            var showIdentifier = j["data"].AsArray().FirstOrDefault(x => x["name"]?.GetValue<string>() == showName)?["productIdentifier"]?.GetValue<string>();
 
             if (showIdentifier == null)
             {
