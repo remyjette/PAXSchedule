@@ -13,7 +13,6 @@ $(function () { // document ready
         .on('click', function () {
             navigator.clipboard.writeText($(this).data('url'));
             setTimeout(() => $(this).tooltip('hide'), 1000);
-            return false; // Don't navigate to '#'
         })
         .tooltip({ trigger: "click" });
 
