@@ -18,8 +18,8 @@ namespace PAXSchedule.Models
         public string FullName { get; }
         private readonly GuidebookService _guidebookService;
         private readonly SemaphoreSlim _configureSemaphore = new SemaphoreSlim(1);
-        private DbContextOptions<GuidebookContext> _dbContextOptions;
-        private FileInfo _databasePath;
+        private DbContextOptions<GuidebookContext>? _dbContextOptions;
+        private FileInfo? _databasePath;
 
         private bool _configured = false;
         private DateTime _lastUpdated;
@@ -66,7 +66,7 @@ namespace PAXSchedule.Models
         public async Task<GuidebookContext> GetDbContext()
         {
             await Configure();
-            return new GuidebookContext(_dbContextOptions);
+            return new GuidebookContext(_dbContextOptions!);
         }
     }
 }

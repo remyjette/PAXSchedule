@@ -21,7 +21,7 @@ namespace PAXSchedule
             SupportedEncodings.Add(Encoding.Unicode);
         }
 
-        protected override bool CanWriteType(Type type)
+        protected override bool CanWriteType(Type? type)
         {
             if (typeof(Calendar).IsAssignableFrom(type))
             {
@@ -32,7 +32,7 @@ namespace PAXSchedule
 
         public override Task WriteResponseBodyAsync(OutputFormatterWriteContext context, Encoding selectedEncoding)
         {
-            string filename = context.HttpContext.Items["filename"] as string;
+            string? filename = context.HttpContext.Items["filename"] as string;
             if (!string.IsNullOrWhiteSpace(filename))
             {
                 if (!filename.EndsWith(".ics"))

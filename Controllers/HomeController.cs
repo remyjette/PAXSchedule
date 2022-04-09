@@ -63,7 +63,7 @@ namespace PAXSchedule.Controllers
 
             // Also filter out any events without a schedule or location, since they won't be visible
             // on the calendar anyway and then the front-end code doesn't need to nullcheck
-            return context.GuidebookEvents.Where(e => e.EventLocation != null && e.ScheduleTracks.Count != 0).Where(eventPredicate);
+            return context.GuidebookEvents.Where(e => e.EventLocation != null && e.ScheduleTracks != null && e.ScheduleTracks.Count != 0).Where(eventPredicate);
         }
 
         [HttpGet("{showName}/[action]")]

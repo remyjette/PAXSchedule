@@ -11,20 +11,20 @@ namespace PAXSchedule.Models.Gudebook
     public partial class GuidebookEvent
     {
         [ForeignKey("GuideId")]
-        public GuidebookGuide Guide { get; set; }
+        public GuidebookGuide Guide { get; set; } = null!;
 
-        public GuidebookEventLocation EventLocation { get; set; }
+        public GuidebookEventLocation EventLocation { get; set; } = null!;
 
-        public List<GuidebookEventScheduleTrack> ScheduleTracks { get; set; }
+        public List<GuidebookEventScheduleTrack> ScheduleTracks { get; set; } = null!;
 
-        public string PlaintextDescription
+        public string? PlaintextDescription
         {
             get
             {
                 return Description
-                    .Replace("<p>", "")
-                    .Replace("</p>", "")
-                    .Replace("<br>", "\n").Trim();
+                    ?.Replace("<p>", "")
+                    ?.Replace("</p>", "")
+                    ?.Replace("<br>", "\n")?.Trim();
             }
         }
     }
@@ -32,18 +32,18 @@ namespace PAXSchedule.Models.Gudebook
     public partial class GuidebookEventLocation
     {
         [ForeignKey("EventId")]
-        public GuidebookEvent Event { get; set; }
+        public GuidebookEvent Event { get; set; } = null!;
 
         [ForeignKey("LocationId")]
-        public GuidebookLocation Location { get; set; }
+        public GuidebookLocation Location { get; set; } = null!;
     }
 
     public partial class GuidebookEventScheduleTrack
     {
         [ForeignKey("EventId")]
-        public GuidebookEvent Event { get; set; }
+        public GuidebookEvent Event { get; set; } = null!;
 
         [ForeignKey("ScheduleId")]
-        public GuidebookSchedule Schedule { get; set; }
+        public GuidebookSchedule Schedule { get; set; } = null!;
     }
 }

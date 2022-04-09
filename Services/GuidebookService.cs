@@ -41,7 +41,7 @@ namespace PAXSchedule.Services
 
             var j = JsonNode.Parse(searchResponse);
 
-            var showIdentifier = j["data"].AsArray().FirstOrDefault(x => x["name"]?.GetValue<string>() == showName)?["productIdentifier"]?.GetValue<string>();
+            var showIdentifier = j?["data"]?.AsArray()?.FirstOrDefault(x => x?["name"]?.GetValue<string>() == showName)?["productIdentifier"]?.GetValue<string>();
 
             if (showIdentifier == null)
             {
@@ -51,6 +51,11 @@ namespace PAXSchedule.Services
             using var guidebookDatabaseStream = await client.GetStreamAsync($"https://gears.guidebook.com/service/v2/guides/{showIdentifier}/bundle/");
             using var guidebookArchive = new ZipArchive(guidebookDatabaseStream);
             var database = guidebookArchive.GetEntry("guide.db");
+
+            if (database == null)
+            {
+                throw new Exception($"Found show but no guide.db present for show with name {showName}");
+            }
 
             var databasePath = Path.GetTempFileName();
 
@@ -65,7 +70,7 @@ namespace PAXSchedule.Services
             return _shows.First().Value;
         }
 
-        public Show GetShow(string showName)
+        public Show? GetShow(string showName)
         {
             return _shows.TryGetValue(showName, out var show) ? show : null;
         }
