@@ -1,0 +1,3 @@
+EFCore Models created with
+
+dotnet ef dbcontext scaffold "Data Source=guide.db" Microsoft.EntityFrameworkCore.Sqlite --context GuidebookContext --namespace PAXSchedule.Models.Gudebook --output-dir Models\Guidebook --no-onconfiguring
