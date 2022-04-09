@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace PAXSchedule.Models.Gudebook
@@ -26,14 +26,14 @@ namespace PAXSchedule.Models.Gudebook
         public long? Rank { get; set; }
         public long? GuideVersion { get; set; }
         public long? BundleVersion { get; set; }
-        public byte[]? UpdateDate { get; set; }
-        public byte[]? StartDate { get; set; }
-        public byte[]? EndDate { get; set; }
+        public DateTime? UpdateDate { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
         public string? Timezone { get; set; }
         public string? ShortName { get; set; }
-        public byte[]? InviteOnly { get; set; }
-        public byte[]? LoginRequired { get; set; }
-        public byte[]? IsPreview { get; set; }
+        public bool? InviteOnly { get; set; }
+        public bool? LoginRequired { get; set; }
+        public bool? IsPreview { get; set; }
         public string? IconRaw { get; set; }
         public string? Cover { get; set; }
         public string? CogDetails { get; set; }

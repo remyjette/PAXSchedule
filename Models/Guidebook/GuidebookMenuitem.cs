@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace PAXSchedule.Models.Gudebook
@@ -13,7 +13,7 @@ namespace PAXSchedule.Models.Gudebook
         public string? Image { get; set; }
         public string? Url { get; set; }
         public long? Rank { get; set; }
-        public byte[]? LastUpdated { get; set; }
+        public DateTime? LastUpdated { get; set; }
         public string? DisplayOptions { get; set; }
 
         public virtual GuidebookGuide? Guide { get; set; }

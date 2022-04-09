@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace PAXSchedule.Models.Gudebook
@@ -11,7 +11,7 @@ namespace PAXSchedule.Models.Gudebook
         public long TrackId { get; set; }
         public string Media { get; set; } = null!;
         public long? FileSize { get; set; }
-        public byte[]? PlaysEnroute { get; set; }
+        public bool? PlaysEnroute { get; set; }
 
         public virtual GuidebookTourstop TourStop { get; set; } = null!;
         public virtual GuidebookTourstopPoint? TourStopPoint { get; set; }

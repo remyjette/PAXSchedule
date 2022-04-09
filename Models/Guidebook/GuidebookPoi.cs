@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace PAXSchedule.Models.Gudebook
@@ -12,10 +12,10 @@ namespace PAXSchedule.Models.Gudebook
         public string? Description { get; set; }
         public string? Image { get; set; }
         public string? Label { get; set; }
-        public byte[]? AllowRating { get; set; }
-        public byte[]? AddToDo { get; set; }
-        public byte[]? Deleted { get; set; }
-        public byte[]? LastUpdated { get; set; }
+        public bool? AllowRating { get; set; }
+        public bool? AddToDo { get; set; }
+        public bool? Deleted { get; set; }
+        public DateTime? LastUpdated { get; set; }
         public long? Rank { get; set; }
         public string? Locations { get; set; }
         public string? Categories { get; set; }

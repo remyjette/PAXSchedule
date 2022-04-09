@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace PAXSchedule.Models.Gudebook
@@ -17,7 +17,7 @@ namespace PAXSchedule.Models.Gudebook
         public double? Longitude { get; set; }
         public double? Latitude { get; set; }
         public double? Zoom { get; set; }
-        public byte[]? LastUpdated { get; set; }
+        public DateTime? LastUpdated { get; set; }
 
         public virtual GuidebookGuide? Guide { get; set; }
     }

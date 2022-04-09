@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace PAXSchedule.Models.Gudebook
@@ -21,7 +21,7 @@ namespace PAXSchedule.Models.Gudebook
         public string? HeadlineDescription { get; set; }
         public long? ConclusionActionMenuitemId1 { get; set; }
         public long? ConclusionActionMenuitemId2 { get; set; }
-        public byte[] GpsDisabled { get; set; } = null!;
+        public bool? GpsDisabled { get; set; } = null!;
 
         public virtual GuidebookGuide? Guide { get; set; }
         public virtual ICollection<GuidebookTourMediatrack> GuidebookTourMediatracks { get; set; }

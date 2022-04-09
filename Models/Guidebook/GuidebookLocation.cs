@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace PAXSchedule.Models.Gudebook
@@ -16,7 +16,7 @@ namespace PAXSchedule.Models.Gudebook
         public double? Latitude { get; set; }
         public long? VenueId { get; set; }
         public string? LocType { get; set; }
-        public byte[]? Deleted { get; set; }
-        public byte[]? LastUpdated { get; set; }
+        public bool? Deleted { get; set; }
+        public DateTime? LastUpdated { get; set; }
     }
 }
