@@ -115,14 +115,14 @@ $(function () { // document ready
                     newTrackButton.show();
                     newTrackButton.find('span').text(track.name);
                     if (!panelTrack || track == panelTrack) {
-                        newTrackButton.addClass('active');
+                        newTrackButton.addClass('selected-track');
                     }
                     var color = track.hexValue || "#3a87ad"; // Matches default for FullCalendar, should probably be more clever about this
                     newTrackButton.data('track', track);
                     newTrackButton.css('cursor', 'pointer');
                     newTrackButton.css('border-color', track.hexValue);
-                    newTrackButton.css('color', newTrackButton.hasClass('active') ? 'white' : color);
-                    newTrackButton.css('background-color', newTrackButton.hasClass('active') ? color : 'white');
+                    newTrackButton.css('color', newTrackButton.hasClass('selected-track') ? 'white' : color);
+                    newTrackButton.css('background-color', newTrackButton.hasClass('selected-track') ? color : 'white');
                     newTrackButton.appendTo(trackButtonTemplate.parent());
                 });
             }
@@ -140,18 +140,18 @@ $(function () { // document ready
             });
 
             var selectedTracksEvents = () => {
-                var selectedTrackIds = _.pluck($('.track-button.active').map((i, e) => $(e).data('track')).get(), 'id');
+                var selectedTrackIds = _.pluck($('.track-button.selected-track').map((i, e) => $(e).data('track')).get(), 'id');
                 return _(allEvents).filter(e => _.chain(e.scheduleTracks).pluck('schedule').pluck('id').intersection(selectedTrackIds).value().length > 0);
             }
             $('.track-button').on('click', e => {
                 e.preventDefault();
                 e.stopPropagation();
                 var $button = $(e.currentTarget);
-                $button.toggleClass('active');
+                $button.toggleClass('selected-track');
                 // TODO combine coloring with the initial render code
                 var color = $button.data('track').hexValue || "#3a87ad"; // Matches default for FullCalendar, should probably be more clever about this
-                $button.css('color', $button.hasClass('active') ? 'white' : color);
-                $button.css('background-color', $button.hasClass('active') ? color : 'white');
+                $button.css('color', $button.hasClass('selected-track') ? 'white' : color);
+                $button.css('background-color', $button.hasClass('selected-track') ? color : 'white');
                 calendar.refetchEvents();
             });
 
