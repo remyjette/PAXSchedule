@@ -12,12 +12,12 @@ namespace PAXSchedule.Models
 {
     public class Show
     {
-        private static TimeSpan eventExpiration = new TimeSpan(1, 0, 0, 0);
+        private static readonly TimeSpan eventExpiration = new(1, 0, 0, 0);
 
         public string Name { get; }
         public string FullName { get; }
         private readonly GuidebookService _guidebookService;
-        private readonly SemaphoreSlim _configureSemaphore = new SemaphoreSlim(1);
+        private readonly SemaphoreSlim _configureSemaphore = new(1);
         private DbContextOptions<GuidebookContext>? _dbContextOptions;
         private FileInfo? _databasePath;
 

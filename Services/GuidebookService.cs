@@ -17,7 +17,7 @@ namespace PAXSchedule.Services
     {
         private readonly IHttpClientFactory _clientFactory;
 
-        private Dictionary<string, Show> _shows;
+        private readonly Dictionary<string, Show> _shows;
 
         public GuidebookService(IHttpClientFactory clientFactory)
         {

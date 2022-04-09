@@ -48,7 +48,7 @@ namespace PAXSchedule.Controllers
             return View(show);
         }
 
-        private IQueryable<GuidebookEvent> GetEvents(GuidebookContext context, string eventHashids)
+        private static IQueryable<GuidebookEvent> GetEvents(GuidebookContext context, string eventHashids)
         {
             // eventPredicate will determine if a given event should be included in the calendar
             // If eventHashIds is null, include all events
