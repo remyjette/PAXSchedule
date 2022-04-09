@@ -1,28 +1,56 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using PAXSchedule;
+using PAXSchedule.Services;
+using System.Text.Json.Serialization;
 
-namespace PAXSchedule
-{
-    public class Program
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services
+    .AddRouting(options =>
     {
-        public static void Main(string[] args)
-        {
-            CreateHostBuilder(args).Build().Run();
-        }
+        options.LowercaseUrls = true;
+        options.LowercaseQueryStrings = true;
+    })
+    .AddMvc(options =>
+        options.OutputFormatters.Add(new CalendarOutputFormatter())
+    )
+    .AddJsonOptions(options => options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
-    }
+builder.Services
+    .AddSingleton<GuidebookService>()
+    .AddHttpClient();
+
+var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
 }
+else
+{
+    app.UseExceptionHandler("/Home/Error");
+}
+
+// Redirect www.paxschedule.com to https://paxschedule.com
+app.Use((context, next) =>
+{
+    if (context.Request.Host.Host == "www.paxschedule.com")
+    {
+        context.Response.Redirect("https://paxschedule.com" + context.Request.Path, permanent: true);
+        return context.Response.StartAsync();
+    }
+    return next(context);
+});
+
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+
+app.UseRouting();
+
+app.UseAuthorization();
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+app.MapRazorPages();
+
+app.Run();
