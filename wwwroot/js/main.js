@@ -166,14 +166,14 @@ $(function () { // document ready
             });
 
             // TODO: consolidate these two
-            var minTime = _.chain(events).pluck('startTime').map(dateString =>
-                LocalDateTime.parse(dateString.replace(' ', 'T')).toLocalTime()
+            var minTime = _.chain(events).pluck('startTime').filter(dateString => dateString != null).map(dateString =>
+                LocalDateTime.parse(dateString).toLocalTime()
             )
                 .min(x => x.toSecondOfDay())
                 .value()
                 .toString();
-            var maxTime = _.chain(events).pluck('endTime').map(dateString =>
-                LocalDateTime.parse(dateString.replace(' ', 'T')).toLocalTime()
+            var maxTime = _.chain(events).pluck('endTime').filter(dateString => dateString != null).map(dateString =>
+                LocalDateTime.parse(dateString).toLocalTime()
             )
                 .max(x => x.toSecondOfDay())
                 .value()
