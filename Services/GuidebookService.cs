@@ -19,7 +19,7 @@ namespace PAXSchedule.Services
 
             _shows = new Dictionary<string, Show>()
             {
-                { "paxeast2022", new Show("paxeast2022", "PAX East 2022", this) }
+                { "paxwest2022", new Show("paxwest2022", "PAX West 2022", this) }
             };
         }
 
